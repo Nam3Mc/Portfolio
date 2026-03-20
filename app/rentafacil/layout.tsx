@@ -3,6 +3,7 @@
 import Navbar from "@/components/rentafacil/global/Navbar"
 import Footer from "@/components/rentafacil/global/Footer"
 import Web3Provider from "@/src/rentafacil/web3/Web3Provider"
+import { AuthProvider } from "@/src/rentafacil/auth/AuthContext"
 
 export default function RentaFacilLayout({
   children,
@@ -12,26 +13,30 @@ export default function RentaFacilLayout({
 
   return (
 
-    <Web3Provider>
+      <AuthProvider>
+        <Web3Provider>
 
-      <section className="min-h-screen bg-white flex flex-col">
 
-        <Navbar />
+        <section className="min-h-screen bg-white flex flex-col">
 
-        {/* MAIN CONTENT */}
-        <main className="flex-1 pt-24">
+          <Navbar />
 
-          <div className="max-w-7xl mx-auto px-6">
-            {children}
-          </div>
+          {/* MAIN CONTENT */}
+          <main className="flex-1 pt-24">
 
-        </main>
+            <div className="max-w-7xl mx-auto px-6">
+              {children}
+            </div>
 
-        <Footer />
+          </main>
 
-      </section>
+          <Footer />
 
-    </Web3Provider>
+        </section>
+
+        </Web3Provider>
+      </AuthProvider>
+
 
   )
 }

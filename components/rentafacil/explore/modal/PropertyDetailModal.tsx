@@ -6,10 +6,12 @@ import Image from "next/image"
 
 import { PropertyDetailModalProps } from "@/src/rentafacil/interfaces/PropertyDetailModalProps"
 import useWallet from "@/src/rentafacil/web3/hooks/useWallet"
+import { useAuth } from "@/src/rentafacil/auth/AuthContext"
 
 export default function PropertyDetailModal({ property, onClose }: PropertyDetailModalProps) {
 
   const wallet = useWallet()
+  const { user } = useAuth()
   const router = useRouter()
 
   if (!property) return null
@@ -30,11 +32,15 @@ export default function PropertyDetailModal({ property, onClose }: PropertyDetai
     router.push(`/rentafacil/explore/checkout/${property.id}`)
   }
 
+  const handleLogin = () => {
+    router.push("/login")
+  }
+
   return (
 
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm md:p-6">
 
-      <div className="bg-white w-full max-w-5xl rounded-2xl shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      <div className="bg-white w-full h-full md:h-auto md:max-w-5xl md:rounded-2xl shadow-2xl relative max-h-screen md:max-h-[90vh] overflow-y-auto">
 
         {/* CLOSE BUTTON */}
         <button
@@ -44,10 +50,22 @@ export default function PropertyDetailModal({ property, onClose }: PropertyDetai
           <X size={18} />
         </button>
 
-        {/* IMAGE GALLERY */}
-        <div className="grid grid-cols-4 grid-rows-2 gap-2 p-4 h-[420px]">
+        {/* MOBILE IMAGE */}
+        <div className="md:hidden relative w-full h-[260px]">
 
-          {/* MAIN IMAGE */}
+          <Image
+            src={images[0]}
+            alt={property.name}
+            fill
+            priority
+            className="object-cover"
+          />
+
+        </div>
+
+        {/* DESKTOP GALLERY */}
+        <div className="hidden md:grid grid-cols-4 grid-rows-2 gap-2 p-4 h-[420px]">
+
           <div className="col-span-2 row-span-2 relative rounded-xl overflow-hidden">
 
             <Image
@@ -61,7 +79,6 @@ export default function PropertyDetailModal({ property, onClose }: PropertyDetai
 
           </div>
 
-          {/* SECONDARY IMAGES */}
           {images.slice(1, 5).map((img, index) => (
 
             <div
@@ -84,16 +101,16 @@ export default function PropertyDetailModal({ property, onClose }: PropertyDetai
         </div>
 
         {/* CONTENT */}
-        <div className="p-8 flex flex-col gap-6">
+        <div className="p-5 md:p-8 flex flex-col gap-6">
 
           {/* HEADER */}
           <div className="flex flex-col gap-2">
 
-            <h2 className="text-3xl font-bold">
+            <h2 className="text-xl md:text-3xl font-bold">
               {property.name}
             </h2>
 
-            <div className="flex items-center gap-4 text-gray-500 text-sm">
+            <div className="flex flex-wrap items-center gap-4 text-gray-500 text-sm">
 
               <div className="flex items-center gap-1">
                 <MapPin size={16} />
@@ -110,7 +127,7 @@ export default function PropertyDetailModal({ property, onClose }: PropertyDetai
           </div>
 
           {/* DESCRIPTION */}
-          <p className="text-gray-700 leading-relaxed max-w-3xl">
+          <p className="text-gray-700 leading-relaxed max-w-3xl text-sm md:text-base">
             {property.description}
           </p>
 
@@ -157,9 +174,9 @@ export default function PropertyDetailModal({ property, onClose }: PropertyDetai
           )}
 
           {/* PRICE + ACTIONS */}
-          <div className="flex items-center justify-between pt-4 border-t">
+          <div className="flex flex-col md:flex-row gap-4 md:items-center md:justify-between pt-4 border-t">
 
-            <div className="text-3xl font-bold text-indigo-600">
+            <div className="text-2xl md:text-3xl font-bold text-indigo-600">
 
               ${property.pricePerNight}
 
@@ -169,26 +186,45 @@ export default function PropertyDetailModal({ property, onClose }: PropertyDetai
 
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
 
               <button
                 onClick={handleViewMore}
-                className="px-6 py-2 border rounded-xl hover:bg-gray-100 transition"
+                className="w-full md:w-auto px-6 py-2 border rounded-xl hover:bg-gray-100 transition"
               >
                 View More
               </button>
 
-              {!wallet.connected ? (
+              {/* NOT LOGGED */}
 
-                <button className="bg-gray-400 text-white px-6 py-2 rounded-xl">
+              {!user && (
+
+                <button
+                  onClick={handleLogin}
+                  className="w-full md:w-auto bg-gray-400 text-white px-6 py-2 rounded-xl"
+                >
+                  Log in to reserve
+                </button>
+
+              )}
+
+              {/* LOGGED BUT NO WALLET */}
+
+              {user && !wallet.connected && (
+
+                <button className="w-full md:w-auto bg-indigo-500 text-white px-6 py-2 rounded-xl">
                   Connect wallet
                 </button>
 
-              ) : (
+              )}
+
+              {/* READY TO RESERVE */}
+
+              {user && wallet.connected && (
 
                 <button
                   onClick={handleReserve}
-                  className="bg-indigo-600 text-white px-6 py-2 rounded-xl hover:bg-indigo-700 transition"
+                  className="w-full md:w-auto bg-indigo-600 text-white px-6 py-2 rounded-xl hover:bg-indigo-700 transition"
                 >
                   Reserve
                 </button>

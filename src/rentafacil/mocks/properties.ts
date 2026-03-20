@@ -1,175 +1,188 @@
 import { Property } from "@/src/rentafacil/interfaces/Property"
-import { users } from "./users"
 
-// Obtener solo usuarios que sean owner
-const ownerIds = users.filter((u) => u.role === "owner").map((u) => u.id)
+export const fallbackOwner = [
+  "user-owner-1",
+  "user-owner-2",
+  "user-owner-3",
+  "user-owner-4"
+]
 
-// fallback por si no hay owners
-const fallbackOwner = ownerIds.length > 0 ? ownerIds : ["demo-owner"]
-
-const propertyTypes: Property["type"][] = [
+export const propertyTypes: Property["type"][] = [
   "apartment",
   "house",
-  "loft",
-  "penthouse",
+  "studio",
+  "loft"
 ]
 
-export const properties: Property[] = [
-  {
-    id: "property-1",
-    name: "Apartamento Moderno en Bogotá",
-    description: "Apartamento luminoso, cerca de centros comerciales.",
-    location: "Bogotá, Colombia",
-    pricePerNight: 50,
-    images: [
-      `https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg`,
-      `https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg`,
-      `https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg`,
-      `https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg`,
-      `https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg`,
-      `https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg`,
-    ],
-    ownerId: fallbackOwner[0],
-    type: "apartment",
-
-    maxGuests: 4,
-    bedrooms: 2,
-    bathrooms: 1,
-
-    amenities: ["WiFi", "Cocina", "Aire acondicionado"],
-    available: true,
-
-    reviews: [
-      {
-        user: "Michael",
-        rating: 5,
-        comment: "Amazing apartment, very clean."
-      },
-      {
-        user: "Laura",
-        rating: 4,
-        comment: "Great location near restaurants."
-      }
-    ]
-  },
-
-  {
-    id: "property-2",
-    name: "Casa Familiar en Medellín",
-    description: "Amplia casa con jardín y piscina.",
-    location: "Medellín, Colombia",
-    pricePerNight: 120,
-    images: [
-      `https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg`,
-      `https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg`,
-      `https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg`,
-      `https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg`,
-      `https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg`,
-      `https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg`,
-    ],
-    ownerId: fallbackOwner[0],
-    type: "house",
-
-    maxGuests: 8,
-    bedrooms: 4,
-    bathrooms: 3,
-
-    amenities: ["Piscina", "Parqueadero", "WiFi"],
-    available: true,
-
-    reviews: [
-      {
-        user: "Daniel",
-        rating: 5,
-        comment: "Perfect for family vacations."
-      },
-      {
-        user: "Sofia",
-        rating: 5,
-        comment: "Beautiful house and great host."
-      }
-    ]
-  },
-
-  {
-    id: "property-3",
-    name: "Loft Minimalista en Cartagena",
-    description: "Loft con diseño moderno y vista al mar.",
-    location: "Cartagena, Colombia",
-    pricePerNight: 80,
-    images: [
-      `https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg`,
-      `https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg`,
-      `https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg`,
-      `https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg`,
-      `https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg`,
-      `https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg`,
-    ],
-    ownerId: fallbackOwner[0],
-    type: "loft",
-
-    maxGuests: 2,
-    bedrooms: 1,
-    bathrooms: 1,
-
-    amenities: ["WiFi", "Cocina", "Vista al mar"],
-    available: true,
-
-    reviews: [
-      {
-        user: "Ana",
-        rating: 5,
-        comment: "Amazing sea view!"
-      },
-      {
-        user: "Carlos",
-        rating: 4,
-        comment: "Very stylish and comfortable."
-      }
-    ]
-  }
+export const baseAmenities = [
+  "WiFi",
+  "Air Conditioning",
+  "Kitchen",
+  "Smart TV",
+  "Workspace",
+  "Washer",
+  "Pool",
+  "Parking"
 ]
 
-// Generar automáticamente hasta tener 20 propiedades
-for (let i = 4; i <= 20; i++) {
+export const propertyExample: Property = {
+  id: "property-1",
+
+  name: "Luxury Apartment in Bogotá",
+  description:
+    "Beautiful modern apartment located near financial district with amazing city views. Perfect for business travelers or couples.",
+
+  location: "Bogotá, Colombia",
+
+  pricePerNight: 95,
+
+  images: [
+    "https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg",
+    "https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample.jpg",
+    "https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-3.jpg",
+    "https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-4.jpg"
+  ],
+
+  ownerId: "user-owner-1",
+
+  type: "apartment",
+
+  maxGuests: 4,
+  bedrooms: 2,
+  bathrooms: 2,
+
+  amenities: [
+    "WiFi",
+    "Air Conditioning",
+    "Kitchen",
+    "Smart TV",
+    "Workspace",
+    "Washer"
+  ],
+
+  available: true,
+
+  rating: 4.8,
+
+  reviews: [
+    {
+      user: "Michael",
+      rating: 5,
+      comment: "Amazing place. Super clean and great location."
+    },
+    {
+      user: "Laura",
+      rating: 4,
+      comment: "Beautiful apartment and very comfortable."
+    },
+    {
+      user: "Carlos",
+      rating: 5,
+      comment: "Would definitely stay here again."
+    }
+  ],
+
+  reservations: [
+    {
+      id: "reservation-1",
+      propertyId: "property-1",
+      userId: "user-guest-1",
+
+      checkIn: new Date("2026-04-10"),
+      checkOut: new Date("2026-04-15"),
+
+      guests: 2,
+
+      totalPrice: 475,
+
+      status: "confirmed",
+
+      createdAt: new Date("2026-03-01")
+    },
+    {
+      id: "reservation-2",
+      propertyId: "property-1",
+      userId: "user-guest-2",
+
+      checkIn: new Date("2026-05-01"),
+      checkOut: new Date("2026-05-05"),
+
+      guests: 3,
+
+      totalPrice: 380,
+
+      status: "confirmed",
+
+      createdAt: new Date("2026-03-05")
+    }
+  ]
+}
+
+export const properties: Property[] = [propertyExample]
+
+for (let i = 2; i <= 20; i++) {
+  const type = propertyTypes[i % propertyTypes.length]
+  const cityIndex = i % 4
+
+  const city =
+    cityIndex === 0
+      ? "Bogotá"
+      : cityIndex === 1
+      ? "Medellín"
+      : cityIndex === 2
+      ? "Cartagena"
+      : "Cali"
+
+  const location = `${city}, Colombia`
+
+  const amenitiesCount = (i % baseAmenities.length) + 3
 
   properties.push({
     id: `property-${i}`,
-    name: `Propiedad de prueba ${i}`,
-    description: `Descripción de la propiedad de prueba ${i}.`,
-    location: `Ciudad ${i}, Colombia`,
-    pricePerNight: 40 + i,
+
+    name:
+      type === "apartment"
+        ? `Moderno apartamento en ${city}`
+        : type === "house"
+        ? `Casa familiar en ${city}`
+        : type === "studio"
+        ? `Estudio acogedor en ${city}`
+        : `Loft moderno en ${city}`,
+
+    description: `Alojamiento de prueba ${i} en ${city}, ideal para turistas y viajeros de negocios. Espacio cómodo, buena ubicación y servicios esenciales.`,
+
+    location,
+
+    pricePerNight: 40 + i * 3,
 
     images: [
-      `https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg`,
-      `https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg`,
-      `https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg`,
-      `https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg`,
-      `https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg`,
-      `https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg`,
+      "https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg",
+      "https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample.jpg",
+      "https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-3.jpg",
+      "https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-4.jpg"
     ],
 
     ownerId: fallbackOwner[i % fallbackOwner.length],
-    type: propertyTypes[i % propertyTypes.length],
+    type,
 
-    maxGuests: 2 + (i % 6),
+    maxGuests: 2 + (i % 5),
     bedrooms: 1 + (i % 4),
     bathrooms: 1 + (i % 3),
 
-    amenities: ["WiFi", "Cocina", "Aire acondicionado", "Piscina"].slice(
-      0,
-      (i % 4) + 1
-    ),
+    amenities: baseAmenities.slice(0, amenitiesCount),
 
     available: i % 3 !== 0,
+
+    rating: 3.5 + (i % 15) * 0.1,
 
     reviews: [
       {
         user: "Guest User",
         rating: 4,
-        comment: "Nice place to stay."
+        comment: `Nice place to stay. Mock review ${i}.`
       }
-    ]
-  })
+    ],
 
+    reservations: []
+  })
 }
