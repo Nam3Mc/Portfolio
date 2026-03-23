@@ -55,10 +55,10 @@ export default function PropertyBooking({ property }: Props) {
 
   return (
 
-    <div className="bg-white border rounded-xl p-6 shadow-lg flex flex-col gap-4">
+    <div className="bg-white border-none rounded-xl p-6 shadow-lg flex flex-col gap-1">
 
       {/* PRICE */}
-      <h3 className="text-xl font-semibold">
+      <h3 className="text-xl font-semibold text-right">
         {formatCOP(pricePerNight)} / night
       </h3>
 
@@ -70,11 +70,11 @@ export default function PropertyBooking({ property }: Props) {
       {/* TOTAL */}
       {nights > 0 && (
 
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-gray-600 text-right">
 
           {nights} nights × {formatCOP(pricePerNight)}
 
-          <div className="font-semibold text-black mt-1">
+          <div className="font-semibold text-black mt-1 text-right">
             Total: {formatCOP(total)}
           </div>
 

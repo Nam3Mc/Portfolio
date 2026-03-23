@@ -1,6 +1,6 @@
 export interface HeroSearchBarProps {
   onSearch: (params: {
-    location?: string
+    address?: string
     checkIn?: string
     checkOut?: string
     guests?: number

@@ -20,7 +20,7 @@ export default function PropertyGrid({
         </h3>
 
         <p className="text-sm max-w-sm">
-          Try adjusting your filters or searching in another location.
+          Try adjusting your filters or searching in another address.
         </p>
 
       </div>

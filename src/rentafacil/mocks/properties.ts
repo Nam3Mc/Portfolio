@@ -1,11 +1,9 @@
 import { Property } from "@/src/rentafacil/interfaces/Property"
+import { PropertyWeb3 } from "../interfaces/propertyWeb3"
+import { users } from "./users"
 
-export const fallbackOwner = [
-  "user-owner-1",
-  "user-owner-2",
-  "user-owner-3",
-  "user-owner-4"
-]
+// Filtramos los usuarios que son propietarios
+const ownerUsers = users.filter(u => u.role === "owner")
 
 export const propertyTypes: Property["type"][] = [
   "apartment",
@@ -25,105 +23,35 @@ export const baseAmenities = [
   "Parking"
 ]
 
-export const propertyExample: Property = {
-  id: "property-1",
-
-  name: "Luxury Apartment in Bogotá",
-  description:
-    "Beautiful modern apartment located near financial district with amazing city views. Perfect for business travelers or couples.",
-
-  location: "Bogotá, Colombia",
-
-  pricePerNight: 95,
-
-  images: [
-    "https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg",
-    "https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample.jpg",
-    "https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-3.jpg",
-    "https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-4.jpg"
-  ],
-
-  ownerId: "user-owner-1",
-
-  type: "apartment",
-
-  maxGuests: 4,
-  bedrooms: 2,
-  bathrooms: 2,
-
-  amenities: [
-    "WiFi",
-    "Air Conditioning",
-    "Kitchen",
-    "Smart TV",
-    "Workspace",
-    "Washer"
-  ],
-
-  available: true,
-
-  rating: 4.8,
-
-  reviews: [
-    {
-      user: "Michael",
-      rating: 5,
-      comment: "Amazing place. Super clean and great location."
-    },
-    {
-      user: "Laura",
-      rating: 4,
-      comment: "Beautiful apartment and very comfortable."
-    },
-    {
-      user: "Carlos",
-      rating: 5,
-      comment: "Would definitely stay here again."
+// Helper para asignar algunas propiedades como Web3
+const getWeb3Info = (i: number): Partial<PropertyWeb3> | undefined => {
+  if (i % 4 === 0) {
+    const blockchains: PropertyWeb3["blockchain"][] = ["ethereum", "polygon", "arbitrum"]
+    const blockchain = blockchains[i % blockchains.length]
+    return {
+      tokenized: true,
+      tokenId: `token-${i}`,
+      contractAddress: `0x${Math.floor(Math.random() * 1e16).toString(16)}`,
+      blockchain,
+      verifiedOnChain: i % 2 === 0
     }
-  ],
-
-  reservations: [
-    {
-      id: "reservation-1",
-      propertyId: "property-1",
-      userId: "user-guest-1",
-
-      checkIn: new Date("2026-04-10"),
-      checkOut: new Date("2026-04-15"),
-
-      guests: 2,
-
-      totalPrice: 475,
-
-      status: "confirmed",
-
-      createdAt: new Date("2026-03-01")
-    },
-    {
-      id: "reservation-2",
-      propertyId: "property-1",
-      userId: "user-guest-2",
-
-      checkIn: new Date("2026-05-01"),
-      checkOut: new Date("2026-05-05"),
-
-      guests: 3,
-
-      totalPrice: 380,
-
-      status: "confirmed",
-
-      createdAt: new Date("2026-03-05")
-    }
-  ]
+  }
+  return undefined
 }
 
-export const properties: Property[] = [propertyExample]
+// Coordenadas aproximadas por ciudad (simuladas)
+const cityCoords: Record<string, { lat: number; lng: number }> = {
+  Bogotá: { lat: 4.711, lng: -74.072 },
+  Medellín: { lat: 6.244, lng: -75.574 },
+  Cartagena: { lat: 10.391, lng: -75.479 },
+  Cali: { lat: 3.437, lng: -76.522 }
+}
 
-for (let i = 2; i <= 20; i++) {
+export const properties: (Property | PropertyWeb3)[] = []
+
+for (let i = 1; i <= 20; i++) {
   const type = propertyTypes[i % propertyTypes.length]
   const cityIndex = i % 4
-
   const city =
     cityIndex === 0
       ? "Bogotá"
@@ -133,13 +61,15 @@ for (let i = 2; i <= 20; i++) {
       ? "Cartagena"
       : "Cali"
 
-  const location = `${city}, Colombia`
+  const coords = cityCoords[city]
 
+  const address = `${i} Calle Falsa, ${city}, Colombia`
   const amenitiesCount = (i % baseAmenities.length) + 3
 
-  properties.push({
-    id: `property-${i}`,
+  const owner = ownerUsers[i % ownerUsers.length]
 
+  const baseProperty: Property = {
+    id: `property-${i}`,
     name:
       type === "apartment"
         ? `Moderno apartamento en ${city}`
@@ -148,33 +78,27 @@ for (let i = 2; i <= 20; i++) {
         : type === "studio"
         ? `Estudio acogedor en ${city}`
         : `Loft moderno en ${city}`,
-
     description: `Alojamiento de prueba ${i} en ${city}, ideal para turistas y viajeros de negocios. Espacio cómodo, buena ubicación y servicios esenciales.`,
-
-    location,
-
+    address,
+    lat: coords.lat + (Math.random() - 0.5) * 0.02, // ligeras variaciones
+    lng: coords.lng + (Math.random() - 0.5) * 0.02,
     pricePerNight: 40 + i * 3,
-
     images: [
       "https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-2.jpg",
       "https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample.jpg",
       "https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-3.jpg",
+      "https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-4.jpg",
       "https://res.cloudinary.com/dkwpozl38/image/upload/v1773183885/cld-sample-4.jpg"
+
     ],
-
-    ownerId: fallbackOwner[i % fallbackOwner.length],
+    ownerId: owner.id,
     type,
-
     maxGuests: 2 + (i % 5),
     bedrooms: 1 + (i % 4),
     bathrooms: 1 + (i % 3),
-
     amenities: baseAmenities.slice(0, amenitiesCount),
-
     available: i % 3 !== 0,
-
     rating: 3.5 + (i % 15) * 0.1,
-
     reviews: [
       {
         user: "Guest User",
@@ -182,7 +106,13 @@ for (let i = 2; i <= 20; i++) {
         comment: `Nice place to stay. Mock review ${i}.`
       }
     ],
-
     reservations: []
-  })
+  }
+
+  const web3Data = getWeb3Info(i)
+  if (web3Data) {
+    properties.push({ ...baseProperty, ...web3Data })
+  } else {
+    properties.push(baseProperty)
+  }
 }

@@ -114,7 +114,7 @@ export default function PropertyDetailModal({ property, onClose }: PropertyDetai
 
               <div className="flex items-center gap-1">
                 <MapPin size={16} />
-                {property.location}
+                {property.address}
               </div>
 
               <div className="flex items-center gap-1">

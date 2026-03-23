@@ -5,7 +5,7 @@ import { MapPin, Calendar, Users, Search, Cpu } from "lucide-react"
 
 export default function HeroSearchBar() {
 
-  const [location, setLocation] = useState("")
+  const [address, setaddress] = useState("")
   const [checkIn, setCheckIn] = useState("")
   const [checkOut, setCheckOut] = useState("")
   const [guests, setGuests] = useState(1)
@@ -14,10 +14,10 @@ export default function HeroSearchBar() {
 
     const params = new URLSearchParams()
 
-    const normalizedLocation = location.trim()
+    const normalizedaddress = address.trim()
 
-    if (normalizedLocation) {
-      params.set("location", normalizedLocation)
+    if (normalizedaddress) {
+      params.set("address", normalizedaddress)
     }
 
     if (checkIn) {
@@ -59,7 +59,7 @@ export default function HeroSearchBar() {
       "
     >
 
-      {/* LOCATION */}
+      {/* address */}
       <div
         className="
         flex items-center gap-3
@@ -76,15 +76,15 @@ export default function HeroSearchBar() {
         <div className="flex flex-col w-full">
 
           <span className="text-xs text-gray-400">
-            Location
+            address
           </span>
 
           <input
             type="text"
             placeholder="Where are you going?"
             className="w-full outline-none text-sm font-medium"
-            value={location}
-            onChange={(e)=>setLocation(e.target.value)}
+            value={address}
+            onChange={(e)=>setaddress(e.target.value)}
             onKeyDown={handleKeyDown}
           />
 

@@ -28,7 +28,7 @@ export default function ExplorePage() {
 
   const searchParams = useSearchParams()
 
-  const city = searchParams.get("location") || undefined
+  const city = searchParams.get("address") || undefined
   const guestsParam = searchParams.get("guests")
 
   const guests = guestsParam ? Number(guestsParam) : undefined
@@ -43,7 +43,7 @@ export default function ExplorePage() {
   const filteredProperties = (properties as PropertyWeb3[]).filter((property) => {
 
     if (filters.city) {
-      if (!property.location.toLowerCase().includes(filters.city.toLowerCase())) {
+      if (!property.address.toLowerCase().includes(filters.city.toLowerCase())) {
         return false
       }
     }

@@ -98,13 +98,13 @@ export default function PropertyCard({ property, onSelect }: PropertyCardProps) 
 
         </div>
 
-        {/* LOCATION */}
+        {/* address */}
         <div className="flex items-center gap-2 text-gray-500 text-sm">
 
           <MapPin size={15} />
 
           <span className="line-clamp-1">
-            {property.location}
+            {property.address}
           </span>
 
         </div>
