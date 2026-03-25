@@ -8,103 +8,131 @@ export default function Footer() {
     <footer className="w-full bg-white border-t border-gray-200 px-6 py-20">
       <div className="max-w-7xl mx-auto">
 
-        {/* Grid principal */}
         <div className="grid gap-12 md:grid-cols-4">
 
-          {/* Brand */}
+          {/* BRAND */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
           >
-            <h3 className="text-lg font-semibold text-gray-900">Renta-Fácil</h3>
+            <h3 className="text-lg font-semibold text-gray-900">Renta Fácil</h3>
             <p className="mt-4 text-sm text-gray-600 leading-relaxed">
-              Infraestructura digital para alquiler seguro. <br />
-              Contrato vinculante, fondos protegidos y distribución automática.
+              Plataforma para alquiler de propiedades por meses. <br />
+              Transparencia, contratos digitales y pagos seguros.
             </p>
           </motion.div>
 
-          {/* Producto */}
+          {/* PRODUCTO */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">Producto</h4>
+            <h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">
+              Explorar
+            </h4>
+
             <ul className="mt-6 space-y-4 text-sm text-gray-600">
+
               <li>
-                <Link href="#how-it-works" className="hover:text-indigo-600 transition">
+                <Link href="/rentafacil/explore" className="hover:text-indigo-600 transition">
+                  Buscar propiedades
+                </Link>
+              </li>
+
+              <li>
+                <Link href="/rentafacil/explore?filter=available" className="hover:text-indigo-600 transition">
+                  Disponibles ahora
+                </Link>
+              </li>
+
+              <li>
+                <Link href="/rentafacil/explore?filter=occupied" className="hover:text-indigo-600 transition">
+                  Próximamente disponibles
+                </Link>
+              </li>
+
+            </ul>
+          </motion.div>
+
+          {/* PROPIETARIOS */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">
+              Propietarios
+            </h4>
+
+            <ul className="mt-6 space-y-4 text-sm text-gray-600">
+
+              <li>
+                <Link href="/rentafacil/dashboard" className="hover:text-indigo-600 transition">
+                  Mis propiedades
+                </Link>
+              </li>
+
+              <li>
+                <Link href="/rentafacil/contracts" className="hover:text-indigo-600 transition">
+                  Contratos activos
+                </Link>
+              </li>
+
+              <li>
+                <Link href="/rentafacil/create-property" className="hover:text-indigo-600 transition">
+                  Publicar propiedad
+                </Link>
+              </li>
+
+            </ul>
+          </motion.div>
+
+          {/* LEGAL / INFO */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">
+              Plataforma
+            </h4>
+
+            <ul className="mt-6 space-y-4 text-sm text-gray-600">
+
+              <li>
+                <Link href="/rentafacil/how-it-works" className="hover:text-indigo-600 transition">
                   Cómo funciona
                 </Link>
               </li>
+
               <li>
-                <Link href="#owners" className="hover:text-indigo-600 transition">
-                  Para propietarios
+                <Link href="/rentafacil/legal/terms" className="hover:text-indigo-600 transition">
+                  Términos
                 </Link>
               </li>
+
               <li>
-                <Link href="/buscar" className="hover:text-indigo-600 transition">
-                  Buscar alojamiento
+                <Link href="/rentafacil/legal/privacy" className="hover:text-indigo-600 transition">
+                  Privacidad
                 </Link>
               </li>
+
             </ul>
           </motion.div>
 
-          {/* Legal */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">Legal</h4>
-            <ul className="mt-6 space-y-4 text-sm text-gray-600">
-              <li>
-                <Link href="/terminos" className="hover:text-indigo-600 transition">
-                  Términos y condiciones
-                </Link>
-              </li>
-              <li>
-                <Link href="/privacidad" className="hover:text-indigo-600 transition">
-                  Política de privacidad
-                </Link>
-              </li>
-              <li>
-                <Link href="/contrato-digital" className="hover:text-indigo-600 transition">
-                  Contrato digital
-                </Link>
-              </li>
-            </ul>
-          </motion.div>
-
-          {/* Contacto */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            <h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">Contacto</h4>
-            <ul className="mt-6 space-y-4 text-sm text-gray-600">
-              <li>📧 soporte@rentafacil.com</li>
-              <li>💻 Atención remota</li>
-              <li>🌎 Latinoamérica</li>
-            </ul>
-          </motion.div>
         </div>
 
-        {/* Bottom */}
+        {/* BOTTOM */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
           className="mt-16 pt-8 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-500"
         >
-          <p>© {new Date().getFullYear()} Renta-Fácil. Todos los derechos reservados.</p>
-          <p className="mt-4 sm:mt-0">Plataforma de intermediación digital.</p>
+          <p>© {new Date().getFullYear()} Renta Fácil</p>
+          <p className="mt-4 sm:mt-0">Alquiler mensual simplificado</p>
         </motion.div>
 
       </div>

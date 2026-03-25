@@ -1,5 +1,5 @@
-import { Reservation } from "./Reservation"
 import { Review } from "./Review"
+import { Contract } from "./Contract"
 
 export type PropertyType =
   | "apartment"
@@ -13,21 +13,32 @@ export interface Property {
   name: string
   description: string
 
-  address: string       // Dirección completa y precisa
-  lat: number           // Latitud geográfica
-  lng: number           // Longitud geográfica
+  address: string
+  lat: number
+  lng: number
 
-  pricePerNight: number
+  // 🔥 cambio clave (mensual en vez de por noche)
+  pricePerMonth: number
+
   images: string[]
   ownerId: string
   type: PropertyType
+
   maxGuests: number
   bedrooms: number
   bathrooms: number
   amenities: string[]
-  available: boolean
+
+  // 🔥 NUEVO MODELO
+  isOccupied: boolean
+  availableFrom: Date | null
+
+  // 🔥 contrato actual (si existe)
+  currentContract?: Contract
+
+  // ⭐ opcional: contratos futuros (escala después)
+  // futureContracts?: Contract[]
 
   rating?: number
   reviews?: Review[]
-  reservations?: Reservation[]
 }

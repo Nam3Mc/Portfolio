@@ -5,39 +5,36 @@ import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
 import { useRouter } from "next/navigation"
 import LoginModal from "../auth/LoginModal"
+import { useAuth } from "@/src/rentafacil/auth/AuthContext"
 
 export default function Hero() {
 
   const router = useRouter()
+  const { user } = useAuth()
 
   const [mode, setMode] = useState<"owners" | "guests">("owners")
   const [openLogin, setOpenLogin] = useState(false)
 
-  // ⚠️ luego esto vendrá de tu auth context
-  const user = null
-
   const navModes = {
     owners: {
-      title: <>Alquila <span className="text-indigo-600">sin riesgos</span>.</>,
-      subtitle: "Contrato digital, fondos en custodia y liberación automática según cumplimiento.",
-      microcopy: "Recibe pagos seguros automáticamente."
+      title: <>Alquila con <span className="text-indigo-600">contrato seguro</span>.</>,
+      subtitle: "Define duración mínima, protege pagos y automatiza el cumplimiento del contrato.",
+      microcopy: "Ingresos estables con reglas claras."
     },
     guests: {
-      title: <>Reserva <span className="text-indigo-600">sin incertidumbre</span>.</>,
-      subtitle: "Encuentra alojamiento confiable y reserva sin complicaciones.",
-      microcopy: "Encuentra alojamiento rápido y seguro."
+      title: <>Encuentra hogar <span className="text-indigo-600">sin incertidumbre</span>.</>,
+      subtitle: "Consulta disponibilidad real y alquila por meses con condiciones claras.",
+      microcopy: "Transparencia total antes de alquilar."
     }
   }
 
   const handlePublish = () => {
-
-    if(!user){
+    if (!user) {
       setOpenLogin(true)
       return
     }
 
-    router.push("/rentafacil/owner/publish")
-
+    router.push("/rentafacil/owner/list-property")
   }
 
   const handleSearch = () => {
@@ -66,26 +63,26 @@ export default function Hero() {
             <button
               onMouseEnter={() => setMode("owners")}
               onClick={handlePublish}
-              className={`px-6 py-3 rounded-xl font-medium transition duration-300 ease-in-out cursor-pointer ${
+              className={`px-6 py-3 rounded-xl font-medium transition duration-300 ${
                 mode === "owners"
                   ? "bg-indigo-600 text-white shadow-lg"
                   : "bg-gray-100 text-gray-900 hover:bg-gray-200"
-              } focus:outline-none focus:ring-2 focus:ring-indigo-400`}
+              }`}
             >
-              Publicar mi propiedad
+              Publicar propiedad
             </button>
 
             {/* BUSCAR */}
             <button
               onMouseEnter={() => setMode("guests")}
               onClick={handleSearch}
-              className={`px-6 py-3 rounded-xl font-medium transition duration-300 ease-in-out cursor-pointer ${
+              className={`px-6 py-3 rounded-xl font-medium transition duration-300 ${
                 mode === "guests"
                   ? "bg-indigo-600 text-white shadow-lg"
                   : "bg-gray-100 text-gray-900 hover:bg-gray-200"
-              } focus:outline-none focus:ring-2 focus:ring-indigo-400`}
+              }`}
             >
-              Buscar alojamiento
+              Buscar alquiler
             </button>
 
           </div>
@@ -102,7 +99,6 @@ export default function Hero() {
           <div className="rounded-2xl overflow-hidden shadow-xl border border-gray-200">
 
             <AnimatePresence mode="wait">
-
               <motion.div
                 key={mode}
                 initial={{ opacity: 0, y: 20 }}
@@ -110,22 +106,19 @@ export default function Hero() {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5 }}
               >
-
                 <Image
                   src={
                     mode === "owners"
                       ? "/rentafacil/hero-owner.JPG"
                       : "/rentafacil/hero-guest.jpeg"
                   }
-                  alt={mode === "owners" ? "Dashboard propietario" : "Vista huésped"}
+                  alt={mode === "owners" ? "Dashboard propietario" : "Vista inquilino"}
                   width={800}
                   height={600}
                   className="w-full h-auto object-cover max-h-[400px] sm:max-h-[300px] rounded-2xl"
                   priority={mode === "owners"}
                 />
-
               </motion.div>
-
             </AnimatePresence>
 
           </div>
@@ -135,7 +128,6 @@ export default function Hero() {
       </div>
 
       {/* LOGIN MODAL */}
-
       {openLogin && (
         <LoginModal close={() => setOpenLogin(false)} />
       )}

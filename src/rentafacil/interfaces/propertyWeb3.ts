@@ -1,10 +1,21 @@
 import { Property } from "./Property"
 
+export type BlockchainNetwork =
+  | "ethereum"
+  | "polygon"
+  | "arbitrum"
+
 export interface PropertyWeb3 extends Property {
-  tokenized?: boolean
+  // 🔗 Estado de tokenización
+  tokenized: boolean
+
+  // 🪙 Identificación en blockchain
   tokenId?: string
   contractAddress?: string
-  blockchain?: "ethereum" | "polygon" | "arbitrum"
+
+  // 🌐 Red blockchain
+  blockchain?: BlockchainNetwork
+
+  // ✅ Verificación
   verifiedOnChain?: boolean
-  
 }

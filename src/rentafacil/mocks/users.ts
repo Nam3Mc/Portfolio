@@ -26,5 +26,8 @@ export const users: User[] = [
     email: "diana@example.com",
     role: "guest",
   },
-  // Puedes agregar más usuarios si quieres
-];
+]
+
+// 🔥 helpers (IMPORTANTES)
+export const ownerUsers = users.filter(u => u.role === "owner")
+export const guestUsers = users.filter(u => u.role === "guest")

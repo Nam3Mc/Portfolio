@@ -15,6 +15,13 @@ export default function PropertyPage() {
   const fullId = id?.startsWith("property-") ? id : `property-${id}`
   const property = properties.find(p => p.id === fullId)
 
+  const formatCOP = (value: number) =>
+    value.toLocaleString("es-CO", {
+      style: "currency",
+      currency: "COP",
+      minimumFractionDigits: 0,
+    })
+
   if (!property) {
     return (
       <div className="p-10 text-center text-gray-600">
@@ -28,24 +35,50 @@ export default function PropertyPage() {
 
       {/* HEADER */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6">
+
         <div className="space-y-2">
-          <h1 className="text-4xl font-extrabold">{property.name}</h1>
+          <h1 className="text-4xl font-extrabold">
+            {property.name}
+          </h1>
+
           <div className="flex items-center gap-4 text-gray-500 text-sm flex-wrap">
             <span>⭐ {property.rating?.toFixed(1)}</span>
             <span>• {property.reviews?.length || 0} reviews</span>
             <span>• {property.address}</span>
           </div>
+
+          {/* 🔥 STATUS */}
+          <div className="mt-2">
+            {property.isOccupied ? (
+              <span className="text-red-500 text-sm font-medium">
+                Ocupado hasta{" "}
+                {property.availableFrom
+                  ? new Date(property.availableFrom).toLocaleDateString()
+                  : "fecha desconocida"}
+              </span>
+            ) : (
+              <span className="text-green-600 text-sm font-medium">
+                Disponible ahora
+              </span>
+            )}
+          </div>
+
+          {/* WEB3 */}
           {("tokenized" in property && property.tokenized) && (
             <span className="inline-block mt-2 px-3 py-1 text-xs font-semibold bg-purple-100 text-purple-800 rounded-full">
               Crypto Friendly ({property.blockchain})
             </span>
           )}
         </div>
+
+        {/* 💰 PRICE */}
         <div className="hidden md:block text-right">
           <span className="text-2xl font-bold text-indigo-600">
-            ${property.pricePerNight} <span className="text-base font-normal">/ night</span>
+            {formatCOP(property.pricePerMonth)}{" "}
+            <span className="text-base font-normal">/ mes</span>
           </span>
         </div>
+
       </div>
 
       {/* GALERÍA */}
@@ -63,16 +96,24 @@ export default function PropertyPage() {
         {/* LEFT */}
         <div className="lg:col-span-2 space-y-10">
 
-          {/* HOST + QUICK INFO */}
+          {/* INFO RÁPIDA */}
           <div className="flex items-center gap-4 border-b pb-6">
             <div className="flex-1">
-              <h2 className="text-2xl font-semibold">Entire place hosted by John</h2>
+              <h2 className="text-2xl font-semibold">
+                Propiedad completa
+              </h2>
+
               <p className="text-gray-600 mt-2 flex flex-wrap gap-3">
-                <span className="px-2 py-1 bg-gray-100 rounded-full text-xs font-medium">4 guests</span>
-                <span className="px-2 py-1 bg-gray-100 rounded-full text-xs font-medium">2 bedrooms</span>
-                <span className="px-2 py-1 bg-gray-100 rounded-full text-xs font-medium">2 beds</span>
-                <span className="px-2 py-1 bg-gray-100 rounded-full text-xs font-medium">1 bath</span>
-                <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
+                <span className="px-2 py-1 bg-gray-100 rounded-full text-xs font-medium">
+                  {property.maxGuests} huéspedes
+                </span>
+                <span className="px-2 py-1 bg-gray-100 rounded-full text-xs font-medium">
+                  {property.bedrooms} habitaciones
+                </span>
+                <span className="px-2 py-1 bg-gray-100 rounded-full text-xs font-medium">
+                  {property.bathrooms} baños
+                </span>
+                <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium capitalize">
                   {property.type}
                 </span>
               </p>
@@ -81,19 +122,24 @@ export default function PropertyPage() {
 
           {/* DESCRIPTION */}
           <div className="border-b pb-6">
-            <h2 className="text-2xl font-semibold mb-3">Description</h2>
-            <p className="text-gray-700 leading-relaxed">{property.description}</p>
+            <h2 className="text-2xl font-semibold mb-3">
+              Descripción
+            </h2>
+            <p className="text-gray-700 leading-relaxed">
+              {property.description}
+            </p>
           </div>
 
-          {/* FEATURES / AMENITIES */}
+          {/* FEATURES */}
           <div className="border-b pb-6">
-            <h2 className="text-2xl font-semibold mb-3">Amenities</h2>
             <PropertyFeatures property={property} />
           </div>
 
           {/* MAP */}
           <div className="border-b pb-6">
-            <h2 className="text-2xl font-semibold mb-3">Location & Nearby Places</h2>
+            <h2 className="text-2xl font-semibold mb-3">
+              Ubicación
+            </h2>
             <PropertyMap
               lat={property.lat!}
               lng={property.lng!}
@@ -105,7 +151,7 @@ export default function PropertyPage() {
 
         {/* RIGHT */}
         <div className="relative">
-          <div className="sticky top-24 shadow-xl border rounded-xl p-6 bg-white">
+          <div className="sticky top-24">
             <PropertyBooking property={property} />
           </div>
         </div>
@@ -120,7 +166,7 @@ export default function PropertyPage() {
         <ReviewCarousel reviews={property.reviews || []} />
       </div>
 
-      {/* CAROUSEL DE OTRAS PROPIEDADES */}
+      {/* CAROUSEL */}
       <PropertyCarousel />
 
     </div>
