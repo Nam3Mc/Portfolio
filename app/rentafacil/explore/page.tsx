@@ -1,153 +1,144 @@
-"use client"
+'use client'
 
 import { useState } from "react"
-import { useSearchParams } from "next/navigation"
+import HeroSearchBar from "@/components/rentafacil/explore/HeroSearchBar"
+import PropertyGrid from "@/components/rentafacil/explore/PropertyGrid"
+import PropertyDetailModal from "@/components/rentafacil/explore/PropertyDetailModal"
+import { Property } from "@/src/rentafacil/interfaces/Property"
 
-import PropertyGrid from "@/components/rentafacil/explore/layout/PropertyGrid"
-import PropertyDetailModal from "@/components/rentafacil/explore/modal/PropertyDetailModal"
-import FilterSidebar from "@/components/rentafacil/explore/filters/FilterSidebar"
-import HeroSearchBar from "@/components/rentafacil/explore/search/HeroSearchBar"
-
-import { PropertyWeb3 } from "@/src/rentafacil/interfaces/propertyWeb3"
-import { properties } from "@/src/rentafacil/mocks/properties"
-
-type Filters = {
-  city?: string
-  minPrice?: number
-  maxPrice?: number
-  guests?: number
-  type?: string
-  wifi?: boolean
-  pool?: boolean
-  parking?: boolean
-  nftOnly?: boolean
-  blockchain?: "ethereum" | "polygon" | "arbitrum"
-}
+// Mock de propiedades
+import { properties as allProperties } from "@/src/rentafacil/mocks/properties"
 
 export default function ExplorePage() {
-
-  const searchParams = useSearchParams()
-
-  const city = searchParams.get("address") || undefined
-  const guestsParam = searchParams.get("guests")
-
-  const guests = guestsParam ? Number(guestsParam) : undefined
-
-  const [selectedProperty, setSelectedProperty] = useState<PropertyWeb3 | null>(null)
-
-  const [filters, setFilters] = useState<Filters>({
-    city,
-    guests
+  // 🔹 Filtros
+  const [filters, setFilters] = useState({
+    address: "",
+    availableFrom: "",
+    guests: 1,
+    minPrice: undefined as number | undefined,
+    maxPrice: undefined as number | undefined,
   })
 
-  const filteredProperties = (properties as PropertyWeb3[]).filter((property) => {
+  // 🔹 Propiedades filtradas
+  const [filteredProperties, setFilteredProperties] = useState<Property[]>(allProperties)
 
-    if (filters.city) {
-      if (!property.address.toLowerCase().includes(filters.city.toLowerCase())) {
-        return false
-      }
-    }
+  // 🔹 Propiedad seleccionada para modal
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null)
 
-    if (filters.minPrice !== undefined && property.pricePerNight < filters.minPrice) {
-      return false
-    }
+  // 🔹 Paginación
+  const [currentPage, setCurrentPage] = useState(1)
+  const [itemsPerPage, setItemsPerPage] = useState(20)
 
-    if (filters.maxPrice !== undefined && property.pricePerNight > filters.maxPrice) {
-      return false
-    }
+  // 🔹 Función de búsqueda
+  const handleSearch = (newFilters: typeof filters) => {
+    setFilters(newFilters)
 
-    if (filters.guests !== undefined && property.maxGuests < filters.guests) {
-      return false
-    }
+    const results = allProperties.filter(p => {
+      // 🔹 Filtrar por dirección
+      const matchesAddress = p.address.toLowerCase().includes(newFilters.address.toLowerCase())
 
-    if (filters.type && property.type !== filters.type) {
-      return false
-    }
+      // 🔹 Filtrar por huéspedes
+      const matchesGuests = newFilters.guests ? p.guests >= newFilters.guests : true
 
-    if (filters.wifi && !property.amenities.includes("wifi")) {
-      return false
-    }
+      // 🔹 Filtrar por fecha de disponibilidad
+      const matchesDate = newFilters.availableFrom
+        ? new Date(p.availableFrom) <= new Date(newFilters.availableFrom)
+        : true
 
-    if (filters.pool && !property.amenities.includes("pool")) {
-      return false
-    }
+      // 🔹 Filtrar por precio mensual
+      const matchesPrice =
+        (newFilters.minPrice === undefined || p.price >= newFilters.minPrice) &&
+        (newFilters.maxPrice === undefined || p.price <= newFilters.maxPrice)
 
-    if (filters.parking && !property.amenities.includes("parking")) {
-      return false
-    }
+      return matchesAddress && matchesGuests && matchesDate && matchesPrice
+    })
 
-    if (filters.nftOnly && !property.tokenized) {
-      return false
-    }
+    setFilteredProperties(results)
+    setCurrentPage(1)
+  }
 
-    if (filters.blockchain && property.blockchain !== filters.blockchain) {
-      return false
-    }
+  // 🔹 Función para seleccionar propiedad
+  const handleSelectProperty = (property: Property) => {
+    setSelectedProperty(property)
+  }
 
-    return true
-  })
+  // 🔹 Lógica de paginación
+  const indexOfLastItem = currentPage * itemsPerPage
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage
+  const currentProperties = filteredProperties.slice(indexOfFirstItem, indexOfLastItem)
+  const totalPages = Math.ceil(filteredProperties.length / itemsPerPage)
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= totalPages) setCurrentPage(newPage)
+  }
+
+  const handleItemsPerPageChange = (newLimit: number) => {
+    setItemsPerPage(newLimit)
+    setCurrentPage(1)
+  }
 
   return (
+    <div className="container mx-auto py-10 px-4 flex flex-col gap-10">
 
-    <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-10 flex flex-col gap-8 md:gap-10">
+      {/* Hero Search Bar */}
+      <HeroSearchBar
+        onSearch={handleSearch}
+      />
 
-      {/* PAGE TITLE */}
-      <div className="flex flex-col gap-2">
+      {/* Property Grid */}
+      <PropertyGrid
+        properties={currentProperties}
+        onSelectProperty={handleSelectProperty}
+      />
 
-        <h1 className="text-2xl md:text-3xl font-bold">
-          Explore Properties
-        </h1>
+      {/* Paginación */}
+      {filteredProperties.length > itemsPerPage && (
+        <div className="flex justify-between items-center mt-8">
+          
+          {/* Selector de cantidad por página */}
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-600">Show:</span>
+            <select
+              value={itemsPerPage}
+              onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
+              className="border rounded px-2 py-1 text-sm"
+            >
+              {[20, 50, 100, 200].map(num => (
+                <option key={num} value={num}>{num}</option>
+              ))}
+            </select>
+          </div>
 
-        <p className="text-gray-500 text-sm md:text-base">
-          Discover luxury stays and tokenized real estate.
-        </p>
-
-      </div>
-
-      {/* HERO SEARCH BAR */}
-      <HeroSearchBar />
-
-      {/* MOBILE FILTER BUTTON */}
-      <div className="md:hidden">
-        <FilterSidebar
-          filters={filters}
-          onFilterChange={setFilters}
-        />
-      </div>
-
-      {/* GRID LAYOUT */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-
-        {/* FILTER SIDEBAR DESKTOP */}
-        <div className="hidden md:block md:col-span-3">
-
-          <FilterSidebar
-            filters={filters}
-            onFilterChange={setFilters}
-          />
+          {/* Botones de navegación */}
+          <div className="flex gap-2">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-3 py-1 border rounded disabled:opacity-50"
+            >
+              Prev
+            </button>
+            <span className="px-2 text-sm">
+              {currentPage} / {totalPages}
+            </span>
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="px-3 py-1 border rounded disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
 
         </div>
+      )}
 
-        {/* PROPERTY GRID */}
-        <div className="md:col-span-9">
-
-          <PropertyGrid
-            properties={filteredProperties}
-            onSelectProperty={setSelectedProperty}
-          />
-
-        </div>
-
-      </div>
-
-      {/* PROPERTY MODAL */}
+      {/* Property Detail Modal */}
       {selectedProperty && (
-
         <PropertyDetailModal
           property={selectedProperty}
           onClose={() => setSelectedProperty(null)}
         />
-
       )}
 
     </div>

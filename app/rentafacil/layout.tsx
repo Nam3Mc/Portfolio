@@ -17,7 +17,7 @@ export default function RentaFacilLayout({
         <Web3Provider>
 
 
-        <section className="min-h-screen bg-white flex flex-col">
+        <section className="min-h-screen w-full bg-white flex flex-col">
 
           <Navbar />
 
