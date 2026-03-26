@@ -1,4 +1,4 @@
-import { Property } from "@/src/rentafacil/interfaces/Property"
+import { Property,  } from "@/src/rentafacil/interfaces/Property"
 import { PropertyWeb3 } from "../interfaces/propertyWeb3"
 import { users, guestUsers } from "./users"
 
@@ -53,7 +53,7 @@ const cityCoords: Record<string, { lat: number; lng: number }> = {
 
 export const properties: (Property | PropertyWeb3)[] = []
 
-for (let i = 1; i <= 20; i++) {
+for (let i = 1; i <= 40; i++) {
 
   const type = propertyTypes[i % propertyTypes.length]
 

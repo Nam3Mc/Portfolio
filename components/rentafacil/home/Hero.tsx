@@ -4,7 +4,7 @@ import { useState } from "react"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
 import { useRouter } from "next/navigation"
-import LoginModal from "../auth/LoginModal"
+import LoginModal from "../auth/LogIn"
 import { useAuth } from "@/src/rentafacil/auth/AuthContext"
 
 export default function Hero() {

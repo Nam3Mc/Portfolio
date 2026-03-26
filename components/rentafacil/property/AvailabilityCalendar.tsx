@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { useState } from "react"
 
@@ -8,143 +8,100 @@ interface Props {
   onSelect: (startDate: Date, months: number) => void
 }
 
-export default function BookingCalendar({
-  isOccupied,
-  availableFrom,
-  onSelect,
-}: Props) {
-
-  const [currentMonth, setCurrentMonth] = useState(new Date())
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+export default function BookingPanel({ isOccupied, availableFrom, onSelect }: Props) {
+  const [startDate, setStartDate] = useState<Date | null>(null)
   const [months, setMonths] = useState(1)
+  const [currentMonth, setCurrentMonth] = useState(new Date())
 
-  const startOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1)
-  const endOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0)
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
 
-  const daysInMonth = endOfMonth.getDate()
-  const startDay = startOfMonth.getDay()
-
-  const handlePrevMonth = () => {
-    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))
-  }
-
-  const handleNextMonth = () => {
-    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))
-  }
-
-  const isDisabled = (day: number) => {
-    const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day)
-
-    if (isOccupied && availableFrom) {
-      return date < availableFrom
-    }
-
+  const isDisabled = (date: Date) => {
+    if (date < today) return true
+    if (isOccupied && availableFrom) return date < availableFrom
     return false
   }
 
-  const handleSelectDate = (day: number) => {
-    const selected = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day)
-
-    if (isDisabled(day)) return
-
-    setSelectedDate(selected)
-    onSelect(selected, months)
+  const handleClick = (date: Date) => {
+    if (isDisabled(date)) return
+    setStartDate(date)
+    onSelect(date, months)
   }
 
-  const monthLabel = currentMonth.toLocaleString("en-US", {
-    month: "long",
-    year: "numeric",
-  })
+  const startOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1)
+  const endOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0)
+  const daysInMonth = endOfMonth.getDate()
+  const startDay = startOfMonth.getDay()
+
+  const days: (Date | null)[] = []
+  for (let i = 0; i < startDay; i++) days.push(null)
+  for (let i = 1; i <= daysInMonth; i++) days.push(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), i))
+
+  const monthLabel = currentMonth.toLocaleString("es-CO", { month: "long", year: "numeric" })
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl border p-4 w-[340px]">
-
-      {/* HEADER */}
-      <div className="flex items-center justify-between mb-4">
-        <button onClick={handlePrevMonth} className="p-2 rounded-full hover:bg-gray-100">
-          ←
-        </button>
-
-        <h3 className="font-semibold text-sm">
-          {monthLabel}
-        </h3>
-
-        <button onClick={handleNextMonth} className="p-2 rounded-full hover:bg-gray-100">
-          →
-        </button>
-      </div>
+    <div className="w-full max-w-sm mx-auto space-y-4 bg-white p-6 rounded-3xl shadow-lg border">
 
       {/* STATUS */}
-      <div className="mb-3 text-center text-xs">
+      <div className="text-center text-sm font-medium">
         {isOccupied ? (
-          <span className="text-red-500 font-medium">
-            Occupied until {availableFrom?.toDateString()}
-          </span>
+          <span className="text-red-500">Ocupado hasta {availableFrom?.toLocaleDateString()}</span>
         ) : (
-          <span className="text-green-600 font-medium">
-            Available now
-          </span>
+          <span className="text-green-600">Disponible ahora</span>
         )}
       </div>
 
-      {/* DAYS HEADER */}
-      <div className="grid grid-cols-7 text-xs text-gray-500 mb-2 text-center">
-        {["Su","Mo","Tu","We","Th","Fr","Sa"].map((d) => (
-          <div key={d}>{d}</div>
-        ))}
+      {/* CALENDARIO */}
+      <div className="flex justify-between items-center">
+        <button
+          onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))}
+          className="p-2 rounded-full hover:bg-gray-100 transition"
+        >←</button>
+        <h3 className="text-sm font-semibold capitalize">{monthLabel}</h3>
+        <button
+          onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))}
+          className="p-2 rounded-full hover:bg-gray-100 transition"
+        >→</button>
       </div>
 
-      {/* DAYS GRID */}
-      <div className="grid grid-cols-7 gap-1 text-sm">
+      <div className="grid grid-cols-7 text-xs text-gray-400 text-center">
+        {["D","L","M","M","J","V","S"].map(d => <div key={d}>{d}</div>)}
+      </div>
 
-        {Array.from({ length: startDay }).map((_, i) => (
-          <div key={i} />
-        ))}
-
-        {Array.from({ length: daysInMonth }).map((_, i) => {
-          const day = i + 1
+      <div className="grid grid-cols-7 gap-1">
+        {days.map((day, i) => {
+          if (!day) return <div key={i} />
           const disabled = isDisabled(day)
-
+          const isSelected = startDate && day.toDateString() === startDate.toDateString()
           return (
             <button
-              key={day}
+              key={i}
               disabled={disabled}
-              onClick={() => handleSelectDate(day)}
+              onClick={() => handleClick(day)}
               className={`
-                h-9 w-9 flex items-center justify-center rounded-full
-                transition text-sm
-
-                ${disabled
-                  ? "text-gray-300 cursor-not-allowed"
-                  : selectedDate?.getDate() === day
-                  ? "bg-indigo-600 text-white"
-                  : "hover:bg-gray-100"
-                }
-              `}
+                h-10 w-10 flex items-center justify-center rounded-full text-sm transition
+                ${disabled ? "text-gray-300 cursor-not-allowed" : "hover:bg-indigo-100"}
+                ${isSelected ? "bg-indigo-600 text-white shadow-md" : ""}`}
             >
-              {day}
+              {day.getDate()}
             </button>
           )
         })}
       </div>
 
-      {/* MONTH SELECTOR */}
-      <div className="mt-4">
-        <label className="text-xs text-gray-500">مدة (months)</label>
+      {/* SELECTOR DE MESES */}
+      <div className="space-y-1">
+        <label className="text-xs text-gray-500 font-medium">Duración</label>
         <select
           value={months}
           onChange={(e) => {
             const m = Number(e.target.value)
             setMonths(m)
-            if (selectedDate) onSelect(selectedDate, m)
+            if (startDate) onSelect(startDate, m)
           }}
-          className="w-full mt-1 p-2 border rounded-lg text-sm"
+          className="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
         >
-          {[1,2,3,6,12].map((m) => (
-            <option key={m} value={m}>
-              {m} month{m > 1 && "s"}
-            </option>
-          ))}
+          {[1,3,6,12].map(m => <option key={m} value={m}>{m} mes{m>1?"es":""}</option>)}
         </select>
       </div>
 

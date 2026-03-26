@@ -25,23 +25,23 @@ export default function PropertyDetailModal({ property, onClose }: PropertyDetai
 
   const handleViewMore = () => router.push(`/rentafacil/explore/properties/${property.id}`)
   const handleReserve = () => router.push(`/rentafacil/explore/checkout/${property.id}`)
-  const handleLogin = () => router.push("/login")
+  const handleLogin = () => router.push("/rentafacil//login")
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm md:p-6 transition-opacity duration-300">
-      <div className="bg-white w-full h-full md:h-auto md:max-w-5xl md:rounded-2xl shadow-2xl relative max-h-screen md:max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 md:p-6">
+      <div className="bg-white w-full max-w-5xl md:rounded-2xl shadow-2xl overflow-y-auto max-h-screen md:max-h-[90vh]">
 
         {/* CLOSE BUTTON */}
         <button
           onClick={onClose}
           className="absolute top-4 right-4 z-20 bg-white p-2 rounded-full shadow hover:bg-gray-100 transition"
         >
-          <X size={18} />
+          <X size={20} />
         </button>
 
         {/* IMAGE SECTION */}
-        <div className="md:grid md:grid-cols-4 md:grid-rows-2 gap-2 p-4 h-[420px]">
-          <div className="col-span-2 row-span-2 relative rounded-xl overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-2 p-4 h-[300px] md:h-[420px]">
+          <div className="col-span-1 md:col-span-2 row-span-1 md:row-span-2 relative rounded-xl overflow-hidden">
             <Image
               src={mainImage}
               alt={property.name}
@@ -55,7 +55,7 @@ export default function PropertyDetailModal({ property, onClose }: PropertyDetai
             <div
               key={index}
               onClick={() => setMainImage(img)}
-              className={`relative w-full h-full rounded-xl overflow-hidden cursor-pointer transition-all duration-300 hover:scale-105 ${
+              className={`relative w-full h-[80px] md:h-full rounded-xl overflow-hidden cursor-pointer transition-all duration-300 hover:scale-105 ${
                 mainImage === img ? "ring-2 ring-indigo-500" : "opacity-80 hover:opacity-100"
               }`}
             >
@@ -71,12 +71,12 @@ export default function PropertyDetailModal({ property, onClose }: PropertyDetai
         </div>
 
         {/* CONTENT */}
-        <div className="p-5 md:p-8 flex flex-col gap-6">
+        <div className="p-4 md:p-8 flex flex-col gap-4 md:gap-6">
 
           {/* HEADER */}
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-1">
             <h2 className="text-xl md:text-3xl font-bold">{property.name}</h2>
-            <div className="flex flex-wrap items-center gap-4 text-gray-500 text-sm">
+            <div className="flex flex-wrap items-center gap-2 text-gray-500 text-sm">
               <div className="flex items-center gap-1"><MapPin size={16} /> {property.address}</div>
               <div className="flex items-center gap-1"><Users size={16} /> {property.maxGuests} guests</div>
               {property.isOccupied ? (
@@ -88,7 +88,7 @@ export default function PropertyDetailModal({ property, onClose }: PropertyDetai
           </div>
 
           {/* DESCRIPTION */}
-          <p className="text-gray-700 leading-relaxed max-w-3xl text-sm md:text-base">
+          <p className="text-gray-700 leading-relaxed text-sm md:text-base">
             {readMore ? property.description : `${property.description.slice(0, 180)}...`}
             {property.description.length > 180 && (
               <button
@@ -101,15 +101,17 @@ export default function PropertyDetailModal({ property, onClose }: PropertyDetai
           </p>
 
           {/* AMENITIES */}
-          <div className="flex flex-wrap gap-2">
-            {property.amenities?.map((amenity, index) => (
-              <span key={index} className="bg-gray-100 px-3 py-1 rounded-full text-sm">{amenity}</span>
-            ))}
-          </div>
+          {property.amenities?.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {property.amenities.map((amenity, index) => (
+                <span key={index} className="bg-gray-100 px-3 py-1 rounded-full text-xs md:text-sm">{amenity}</span>
+              ))}
+            </div>
+          )}
 
           {/* WEB3 VERIFIED */}
           {property.tokenized && (
-            <div className="border rounded-xl p-4 bg-indigo-50 flex flex-col gap-2 cursor-pointer" onClick={() => setShowWeb3Details(!showWeb3Details)}>
+            <div className="border rounded-xl p-3 md:p-4 bg-indigo-50 flex flex-col gap-2 cursor-pointer" onClick={() => setShowWeb3Details(!showWeb3Details)}>
               <div className="flex items-center gap-2 font-semibold text-indigo-700">
                 <ShieldCheck size={18} /> Blockchain Verified {showWeb3Details ? "▲" : "▼"}
               </div>
@@ -122,13 +124,12 @@ export default function PropertyDetailModal({ property, onClose }: PropertyDetai
           )}
 
           {/* PRICE + ACTIONS */}
-          <div className="flex flex-col md:flex-row gap-4 md:items-center md:justify-between mt-4 sticky bottom-0 bg-white md:bg-transparent p-4 md:p-0 border-t md:border-0 z-10">
-            <div className="text-2xl md:text-3xl font-bold text-indigo-600">${property.pricePerMonth}</div>
-
+          <div className="flex flex-col md:flex-row gap-3 md:items-center md:justify-between mt-4 sticky bottom-0 bg-white md:bg-transparent p-4 md:p-0 border-t md:border-0 z-10">
+            <div className="text-xl md:text-2xl font-bold text-indigo-600">${property.pricePerMonth}</div>
             <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
               <button
                 onClick={handleViewMore}
-                className="w-full md:w-auto px-6 py-2 border rounded-xl hover:bg-gray-100 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+                className="w-full md:w-auto px-4 py-2 border rounded-xl hover:bg-gray-100 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
               >
                 View More
               </button>
@@ -136,16 +137,14 @@ export default function PropertyDetailModal({ property, onClose }: PropertyDetai
               {!user && (
                 <button
                   onClick={handleLogin}
-                  className="w-full md:w-auto bg-gray-400 text-white px-6 py-2 rounded-xl hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+                  className="w-full md:w-auto bg-gray-400 text-white px-4 py-2 rounded-xl hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
                 >
                   Log in to reserve
                 </button>
               )}
 
               {user && !wallet.connected && (
-                <button
-                  className="w-full md:w-auto bg-indigo-500 text-white px-6 py-2 rounded-xl hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-                >
+                <button className="w-full md:w-auto bg-indigo-500 text-white px-4 py-2 rounded-xl hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
                   Connect Wallet
                 </button>
               )}
@@ -153,14 +152,13 @@ export default function PropertyDetailModal({ property, onClose }: PropertyDetai
               {user && wallet.connected && (
                 <button
                   onClick={handleReserve}
-                  className="w-full md:w-auto bg-indigo-600 text-white px-6 py-2 rounded-xl hover:bg-indigo-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+                  className="w-full md:w-auto bg-indigo-600 text-white px-4 py-2 rounded-xl hover:bg-indigo-700 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
                 >
                   Reserve
                 </button>
               )}
             </div>
           </div>
-
         </div>
       </div>
     </div>

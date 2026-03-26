@@ -34,15 +34,15 @@ export default function HeroSearchBar({ onSearch }: HeroSearchBarProps) {
   }
 
   return (
-    <div className="w-full bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition p-4 flex flex-col md:flex-row md:items-center gap-3">
+    <div className="w-full bg-white rounded-3xl shadow-xl p-6 flex flex-col md:flex-row md:items-center gap-4 transition-all hover:shadow-2xl">
 
       {/* Location */}
-      <div className="flex items-center gap-3 px-3 py-2 flex-1">
-        <MapPin size={18} className="text-gray-400"/>
+      <div className="flex items-center gap-3 px-4 py-3 flex-1 bg-gray-50 rounded-2xl border border-gray-200 focus-within:ring-2 focus-within:ring-indigo-500 transition">
+        <MapPin size={20} className="text-indigo-500"/>
         <input
           type="text"
           placeholder="City, neighborhood, or address"
-          className="w-full outline-none text-sm font-medium"
+          className="w-full outline-none text-sm font-medium bg-transparent placeholder-gray-400"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -51,11 +51,11 @@ export default function HeroSearchBar({ onSearch }: HeroSearchBarProps) {
       </div>
 
       {/* Available From */}
-      <div className="flex items-center gap-3 px-3 py-2 w-full md:w-auto md:border-r border-gray-200">
-        <Calendar size={18} className="text-gray-400"/>
+      <div className="flex items-center gap-3 px-4 py-3 w-full md:w-auto bg-gray-50 rounded-2xl border border-gray-200 focus-within:ring-2 focus-within:ring-indigo-500 transition">
+        <Calendar size={20} className="text-indigo-500"/>
         <input
           type="date"
-          className="text-sm font-medium outline-none w-full"
+          className="text-sm font-medium outline-none w-full bg-transparent placeholder-gray-400"
           value={availableFrom}
           onChange={(e) => setAvailableFrom(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -64,12 +64,12 @@ export default function HeroSearchBar({ onSearch }: HeroSearchBarProps) {
       </div>
 
       {/* Max Price */}
-      <div className="flex items-center gap-3 px-3 py-2 w-full md:w-auto">
+      <div className="flex items-center gap-3 px-4 py-3 w-full md:w-auto bg-gray-50 rounded-2xl border border-gray-200 focus-within:ring-2 focus-within:ring-indigo-500 transition">
         <input
           type="number"
           min={0}
           placeholder="Max $"
-          className="w-full md:w-24 text-sm font-medium outline-none border border-gray-300 rounded-lg px-2 py-1 focus:ring-1 focus:ring-indigo-500"
+          className="w-full md:w-28 text-sm font-medium outline-none bg-transparent placeholder-gray-400"
           value={maxPrice}
           onChange={(e) => setMaxPrice(e.target.value === "" ? "" : Number(e.target.value))}
           onKeyDown={handleKeyDown}
@@ -77,16 +77,16 @@ export default function HeroSearchBar({ onSearch }: HeroSearchBarProps) {
         />
       </div>
 
-      {/* Search Button + Web3 */}
+      {/* Search Button */}
       <div className="flex flex-col items-center gap-1 w-full md:w-auto">
         <button
           onClick={handleSearch}
-          className="flex items-center justify-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-xl hover:bg-indigo-700 transition shadow-sm w-full md:w-auto"
+          className="flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-violet-600 text-white px-6 py-3 rounded-2xl hover:scale-105 hover:from-indigo-700 hover:to-violet-700 transition shadow-lg w-full md:w-auto font-semibold"
           aria-label="Search properties"
         >
-          <Search size={16}/> Search
+          <Search size={18}/> Search
         </button>
-        <span className="text-xs text-indigo-700 mt-1">Web3 Rentals</span>
+        <span className="text-xs text-indigo-600 mt-1 font-medium">Web3 Rentals</span>
       </div>
 
     </div>

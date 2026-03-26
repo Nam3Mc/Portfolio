@@ -1,161 +1,112 @@
-"use client"
+'use client'
 
 import { useState } from "react"
+import { motion } from "framer-motion"
 
 interface Props {
-  pricePerMonth: number
   isOccupied: boolean
   availableFrom: Date | null
   onSelect: (startDate: Date, months: number) => void
 }
 
-export default function BookingPanel({
-  pricePerMonth,
-  isOccupied,
-  availableFrom,
-  onSelect,
-}: Props) {
-
-  const [startDate, setStartDate] = useState<Date | null>(null)
-  const [months, setMonths] = useState(1)
+export default function PremiumBookingCalendar({ isOccupied, availableFrom, onSelect }: Props) {
   const [currentMonth, setCurrentMonth] = useState(new Date())
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+  const [months, setMonths] = useState(1)
 
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-
-  const formatCOP = (value: number) =>
-    value.toLocaleString("es-CO", {
-      style: "currency",
-      currency: "COP",
-      minimumFractionDigits: 0,
-    })
-
-  const isDisabled = (date: Date) => {
-    if (date < today) return true
-    if (isOccupied && availableFrom) {
-      return date < availableFrom
-    }
-    return false
-  }
-
-  const handleClick = (date: Date) => {
-    if (isDisabled(date)) return
-
-    setStartDate(date)
-    onSelect(date, months)
-  }
-
-  // calendario base
   const startOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1)
   const endOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0)
   const daysInMonth = endOfMonth.getDate()
   const startDay = startOfMonth.getDay()
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
 
-  const days: (Date | null)[] = []
-  for (let i = 0; i < startDay; i++) days.push(null)
-  for (let i = 1; i <= daysInMonth; i++) {
-    days.push(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), i))
+  const handlePrevMonth = () => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))
+  const handleNextMonth = () => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))
+
+  const isDisabled = (day: number) => {
+    const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day)
+    if (date < today) return true
+    if (isOccupied && availableFrom) return date < availableFrom
+    return false
   }
 
-  const total = pricePerMonth * months
+  const handleSelectDate = (day: number) => {
+    const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day)
+    if (isDisabled(day)) return
+    setSelectedDate(date)
+    onSelect(date, months)
+  }
 
-  const monthLabel = currentMonth.toLocaleString("es-CO", {
-    month: "long",
-    year: "numeric",
-  })
+  const monthLabel = currentMonth.toLocaleString("es-CO", { month: "long", year: "numeric" })
 
   return (
-    <div className="w-full space-y-4 bg-white p-4 rounded-2xl shadow-md border">
+    <div className="bg-white p-6 rounded-3xl shadow-xl w-[360px] max-w-full mx-auto space-y-4">
 
       {/* STATUS */}
-      <div className="text-center text-sm">
+      <div className="text-center text-sm font-medium">
         {isOccupied ? (
-          <span className="text-red-500 font-medium">
-            Ocupado hasta {availableFrom?.toDateString()}
-          </span>
+          <span className="text-red-500">Ocupado hasta {availableFrom?.toLocaleDateString()}</span>
         ) : (
-          <span className="text-green-600 font-medium">
-            Disponible ahora
-          </span>
+          <span className="text-green-600">Disponible ahora</span>
         )}
       </div>
 
       {/* HEADER */}
-      <div className="flex justify-between items-center">
-        <button onClick={() =>
-          setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))
-        }>←</button>
-
-        <h3 className="text-sm font-semibold capitalize">{monthLabel}</h3>
-
-        <button onClick={() =>
-          setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))
-        }>→</button>
+      <div className="flex justify-between items-center mb-2">
+        <button onClick={handlePrevMonth} className="p-2 rounded-full hover:bg-gray-100 transition">←</button>
+        <h3 className="font-semibold text-sm capitalize">{monthLabel}</h3>
+        <button onClick={handleNextMonth} className="p-2 rounded-full hover:bg-gray-100 transition">→</button>
       </div>
 
-      {/* DAYS */}
-      <div className="grid grid-cols-7 text-xs text-gray-400 text-center">
+      {/* DAYS HEADER */}
+      <div className="grid grid-cols-7 text-xs text-gray-500 text-center mb-1">
         {["D","L","M","M","J","V","S"].map(d => <div key={d}>{d}</div>)}
       </div>
 
-      <div className="grid grid-cols-7 gap-1">
-        {days.map((day, i) => {
-          if (!day) return <div key={i} />
-
+      {/* DAYS GRID */}
+      <div className="grid grid-cols-7 gap-1 text-sm">
+        {Array.from({ length: startDay }).map((_, i) => <div key={i} />)}
+        {Array.from({ length: daysInMonth }).map((_, i) => {
+          const day = i + 1
           const disabled = isDisabled(day)
+          const isSelected = selectedDate?.toDateString() === new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day).toDateString()
 
           return (
-            <button
-              key={i}
+            <motion.button
+              key={day}
               disabled={disabled}
-              onClick={() => handleClick(day)}
+              onClick={() => handleSelectDate(day)}
+              layout
+              whileHover={!disabled ? { scale: 1.1 } : {}}
+              whileTap={!disabled ? { scale: 0.95 } : {}}
               className={`
-                h-9 rounded-full text-sm
-                ${disabled ? "text-gray-300" : "hover:bg-gray-100"}
-                ${startDate && day.toDateString() === startDate.toDateString()
-                  ? "bg-indigo-600 text-white"
-                  : ""}
+                h-10 w-10 flex items-center justify-center rounded-full transition
+                ${disabled ? "bg-red-100 text-red-300 cursor-not-allowed" : "bg-gray-50 hover:bg-indigo-100"}
+                ${isSelected ? "bg-indigo-600 text-white shadow-md" : ""}
               `}
             >
-              {day.getDate()}
-            </button>
+              {day}
+            </motion.button>
           )
         })}
       </div>
 
       {/* SELECTOR MESES */}
-      <div>
-        <label className="text-xs text-gray-500">Duración</label>
+      <div className="space-y-1">
+        <label className="text-xs text-gray-500 font-medium">Duración</label>
         <select
           value={months}
           onChange={(e) => {
             const m = Number(e.target.value)
             setMonths(m)
-            if (startDate) onSelect(startDate, m)
+            if (selectedDate) onSelect(selectedDate, m)
           }}
-          className="w-full mt-1 p-2 border rounded-lg"
+          className="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 text-sm"
         >
-          {[1, 3, 6, 12].map(m => (
-            <option key={m} value={m}>
-              {m} mes{m > 1 && "es"}
-            </option>
-          ))}
+          {[1,2,3,6,12].map((m) => <option key={m} value={m}>{m} mes{m>1?"es":""}</option>)}
         </select>
       </div>
-
-      {/* PRECIO */}
-      <div className="border rounded-lg p-4 bg-gray-50 space-y-2 text-sm">
-        <div className="flex justify-between">
-          <span>{months} mes{months > 1 && "es"}</span>
-          <span>{formatCOP(pricePerMonth * months)}</span>
-        </div>
-
-        <div className="border-t pt-2 flex justify-between font-semibold">
-          <span>Total</span>
-          <span>{formatCOP(total)}</span>
-        </div>
-      </div>
-
     </div>
   )
 }
