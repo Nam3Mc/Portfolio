@@ -1,20 +1,28 @@
 "use client"
 
-import { useParams } from "next/navigation"
+import { useParams, useSearchParams } from "next/navigation"
+import { useEffect, useRef } from "react"
 import { properties } from "@/src/rentafacil/mocks/properties"
+
 import PropertyGallery from "@/components/rentafacil/property/PropertyGalery"
 import PropertyBooking from "@/components/rentafacil/property/PropertyBooking"
 import PropertyFeatures from "@/components/rentafacil/property/PropertyFeatures"
 import ReviewCarousel from "@/components/rentafacil/property/ReviewCarousel"
 import PropertyMap from "@/components/rentafacil/property/PropertyMapNearby"
 import PropertyCarousel from "@/components/rentafacil/property/PropertyCarousel"
+
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
 
 export default function PropertyPage() {
   const params = useParams()
+  const searchParams = useSearchParams()
+
+  const bookingRef = useRef<HTMLDivElement | null>(null)
+
   const id = Array.isArray(params.id) ? params.id[0] : params.id
   const fullId = id?.startsWith("property-") ? id : `property-${id}`
+
   const property = properties.find(p => p.id === fullId)
 
   const formatCOP = (value: number) =>
@@ -23,6 +31,20 @@ export default function PropertyPage() {
       currency: "COP",
       minimumFractionDigits: 0,
     })
+
+  // 🔥 Detectar intención de reserva
+  useEffect(() => {
+    const shouldScroll = searchParams.get("reserve")
+
+    if (shouldScroll && bookingRef.current) {
+      setTimeout(() => {
+        bookingRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        })
+      }, 300)
+    }
+  }, [searchParams])
 
   if (!property) {
     return (
@@ -42,7 +64,9 @@ export default function PropertyPage() {
       {/* HEADER */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6">
         <div className="space-y-2">
-          <h1 className="text-4xl font-extrabold text-gray-900">{property.name}</h1>
+          <h1 className="text-4xl font-extrabold text-gray-900">
+            {property.name}
+          </h1>
 
           <div className="flex items-center gap-4 text-gray-500 text-sm flex-wrap">
             <span>⭐ {property.rating?.toFixed(1)}</span>
@@ -96,6 +120,7 @@ export default function PropertyPage() {
           <div className="flex items-center gap-4 border-b pb-6">
             <div className="flex-1">
               <h2 className="text-2xl font-semibold">Propiedad completa</h2>
+
               <div className="mt-2 flex flex-wrap gap-3 text-xs">
                 <span className="px-2 py-1 bg-gray-100 rounded-full font-medium">
                   {property.maxGuests} huéspedes
@@ -116,7 +141,9 @@ export default function PropertyPage() {
           {/* DESCRIPCIÓN */}
           <div className="border-b pb-6">
             <h2 className="text-2xl font-semibold mb-3">Descripción</h2>
-            <p className="text-gray-700 leading-relaxed">{property.description}</p>
+            <p className="text-gray-700 leading-relaxed">
+              {property.description}
+            </p>
           </div>
 
           {/* FEATURES */}
@@ -137,7 +164,7 @@ export default function PropertyPage() {
         </div>
 
         {/* RIGHT COLUMN - BOOKING */}
-        <div className="relative">
+        <div ref={bookingRef} className="relative">
           <div className="sticky top-24">
             <PropertyBooking property={property} />
           </div>
@@ -150,6 +177,7 @@ export default function PropertyPage() {
         <h2 className="text-3xl font-bold">
           ⭐ {property.rating?.toFixed(1)} · {property.reviews?.length || 0} reviews
         </h2>
+
         {property.reviews?.length ? (
           <ReviewCarousel reviews={property.reviews} />
         ) : (
