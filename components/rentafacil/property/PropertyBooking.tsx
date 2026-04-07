@@ -35,20 +35,16 @@ export default function PropertyBooking({ property }: Props) {
     // Guardar la info en localStorage para usarla en checkout
     const bookingData = {
       propertyId: property.id,
-      propertyName: property.name,
-      propertyImage: property.images?.[0],
-      address: property.address,
-    
       startDate: startDate.toISOString(),
       months,
       pricePerMonth,
+
     
-      createdAt: new Date().toISOString() // útil para expiración futura
     }
     localStorage.setItem("bookingData", JSON.stringify(bookingData))
 
     // Redirigir a checkout
-    router.push(`/rentafacil/explore/pre-booking/${property.id}`)
+    router.push(`/rentafacil/explore/pre-booking`)
   }
 
   return (
@@ -59,7 +55,7 @@ export default function PropertyBooking({ property }: Props) {
       </h3>
 
       <BookingPanel
-        pricePerMonth={pricePerMonth}
+        // pricePerMonth={pricePerMonth}
         isOccupied={property.isOccupied}
         availableFrom={property.availableFrom}
         onSelect={handleSelection}

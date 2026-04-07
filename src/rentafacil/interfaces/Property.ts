@@ -1,5 +1,6 @@
 import { Review } from "./Review"
 import { Contract } from "./Contract"
+import { RequiredDocument } from "./RequiredDocument"
 
 export type PropertyType =
   | "apartment"
@@ -7,6 +8,8 @@ export type PropertyType =
   | "loft"
   | "penthouse"
   | "studio"
+
+export type DocumentType = "pdf" | "image" | "any"
 
 export interface Property {
   id: string
@@ -17,7 +20,6 @@ export interface Property {
   lat: number
   lng: number
 
-  // 🔥 cambio clave (mensual en vez de por noche)
   pricePerMonth: number
 
   images: string[]
@@ -29,16 +31,14 @@ export interface Property {
   bathrooms: number
   amenities: string[]
 
-  // 🔥 NUEVO MODELO
   isOccupied: boolean
   availableFrom: Date | null
 
-  // 🔥 contrato actual (si existe)
   currentContract?: Contract
-
-  // ⭐ opcional: contratos futuros (escala después)
-  // futureContracts?: Contract[]
 
   rating?: number
   reviews?: Review[]
+
+  // 🔥 NUEVO
+  documentsRequired?: RequiredDocument[]
 }

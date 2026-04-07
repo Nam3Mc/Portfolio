@@ -60,7 +60,7 @@ export default function NavbarUser() {
                     </Link>
 
                     <Link
-                      href="/rentafacil/contracts"
+                      href="/rentafacil/mis-contractos"
                       className="px-4 py-2 hover:bg-gray-100"
                     >
                       Mis contratos
@@ -97,7 +97,7 @@ export default function NavbarUser() {
       </Link>
 
       <Link
-        href="/rentafacil/contracts"
+        href="/rentafacil/mis-contratos"
         className="py-2 px-2 rounded-lg hover:bg-gray-100"
       >
         Mis contratos
