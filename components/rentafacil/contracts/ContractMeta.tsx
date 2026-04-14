@@ -16,34 +16,51 @@ export default function ContractMeta({
   const total = months * pricePerMonth
 
   return (
-    <div className="flex flex-col gap-2 text-sm text-gray-600">
+    <div className="grid grid-cols-3 gap-3">
 
-      {/* Fecha de inicio */}
-      <div className="flex justify-between">
-        <span>Inicio</span>
-        <span className="text-gray-900 font-medium">
+      {/* 📅 START */}
+      <div className="bg-gray-50 rounded-xl p-3 flex flex-col gap-1">
+        <span className="text-[11px] text-gray-500">Start</span>
+        <span className="text-sm font-semibold text-gray-900">
           {start.toLocaleDateString("es-CO")}
         </span>
       </div>
 
-      {/* Duración */}
-      <div className="flex justify-between">
-        <span>Duración</span>
-        <span className="text-gray-900 font-medium">
-          {months} mes{months > 1 ? "es" : ""}
+      {/* ⏳ DURATION */}
+      <div className="bg-gray-50 rounded-xl p-3 flex flex-col gap-1">
+        <span className="text-[11px] text-gray-500">Duration</span>
+        <span className="text-sm font-semibold text-gray-900">
+          {months} mo
         </span>
       </div>
 
-      {/* Total */}
-      <div className="flex justify-between border-t border-gray-200 pt-2 mt-1">
-        <span className="font-semibold text-gray-900">Total</span>
-        <span className="font-bold text-blue-600">
+      {/* 💰 MONTHLY */}
+      <div className="bg-gray-50 rounded-xl p-3 flex flex-col gap-1">
+        <span className="text-[11px] text-gray-500">Monthly</span>
+        <span className="text-sm font-semibold text-gray-900">
+          {pricePerMonth.toLocaleString("es-CO", {
+            style: "currency",
+            currency: "COP",
+            minimumFractionDigits: 0
+          })}
+        </span>
+      </div>
+
+      {/* 💎 TOTAL (FULL WIDTH EMPHASIS) */}
+      <div className="col-span-3 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-xl p-3 flex items-center justify-between mt-1 border border-indigo-100">
+
+        <span className="text-sm font-semibold text-gray-900">
+          Total Contract Value
+        </span>
+
+        <span className="text-base font-bold text-indigo-600">
           {total.toLocaleString("es-CO", {
             style: "currency",
             currency: "COP",
             minimumFractionDigits: 0
           })}
         </span>
+
       </div>
 
     </div>

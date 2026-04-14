@@ -2,6 +2,7 @@ import { Property } from "@/src/rentafacil/interfaces/Property"
 import { RequiredDocument } from "../interfaces/RequiredDocument"
 import { users, guestUsers } from "./users"
 import { PropertyWeb3 } from "../interfaces/propertyWeb3"
+import { contracts } from "./contracts" // 🔥 IMPORTANTE
 
 // 👤 Owners
 const ownerUsers = users.filter(u => u.role === "owner")
@@ -138,15 +139,24 @@ for (let i = 1; i <= 40; i++) {
   const coords = cityCoords[city]
 
   const owner = ownerUsers[i % ownerUsers.length]
-  const tenant = guestUsers[i % guestUsers.length]
 
-  const isOccupied = i % 3 === 0
+  // 🔥 ID REAL DE PROPIEDAD
+  const propertyId = `property-${i}`
 
-  const contractEnd = new Date()
-  contractEnd.setMonth(contractEnd.getMonth() + (i % 6) + 1)
+  // 🔥 BUSCAR CONTRATO REAL
+  const contract = contracts.find(c => c.propertyId === propertyId)
+
+  // 🔥 ESTADO DERIVADO
+  const isOccupied = contract?.status === "approved"
+  const contractEnd = contract?.endDate || null
+
+  // 🔥 TENANT REAL SI EXISTE
+  const tenant = contract
+    ? guestUsers.find(u => u.id === contract.tenantId)!
+    : guestUsers[i % guestUsers.length] // fallback para reviews
 
   const baseProperty: Property = {
-    id: `property-${i}`,
+    id: propertyId,
 
     name:
       type === "apartment"
@@ -163,7 +173,6 @@ for (let i = 1; i <= 40; i++) {
     lat: coords.lat + (Math.random() - 0.5) * 0.02,
     lng: coords.lng + (Math.random() - 0.5) * 0.02,
 
-    // 💰 MODELO MENSUAL
     pricePerMonth: (40 + i * 3) * 30,
 
     images: [
@@ -181,30 +190,22 @@ for (let i = 1; i <= 40; i++) {
 
     amenities: baseAmenities.slice(0, (i % baseAmenities.length) + 3),
 
-    /* =========================================================
-       📄 DOCUMENTOS (🔥 CLAVE)
-    ========================================================= */
     documentsRequired: getDocumentsByType(type).map(doc => ({
       ...doc,
-      id: `${doc.id}-${i}` // 🔥 IDs únicos
+      id: `${doc.id}-${i}`
     })),
 
-    /* =========================================================
-       📅 DISPONIBILIDAD
-    ========================================================= */
+    // 🔥 AHORA VIENE DE CONTRATO
     isOccupied,
-    availableFrom: isOccupied ? contractEnd : null,
+    availableFrom: contractEnd,
 
-    /* =========================================================
-       📜 CONTRATO
-    ========================================================= */
-    currentContract: isOccupied
+    currentContract: contract
       ? {
-          id: `contract-${i}`,
-          startDate: new Date(),
-          endDate: contractEnd,
-          months: (i % 6) + 1,
-          tenantId: tenant.id
+          id: contract.id,
+          startDate: contract.startDate,
+          endDate: contract.endDate,
+          months: contract.months,
+          tenantId: contract.tenantId
         }
       : undefined,
 
