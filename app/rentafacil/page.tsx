@@ -4,7 +4,6 @@ import HowItWorks from "@/components/rentafacil/home/HowItWorks"
 import ForOwners from "@/components/rentafacil/home/ForOwners"
 import FinalCTA from "@/components/rentafacil/home/FinalCTA"
 import Comparison from "@/components/rentafacil/home/Comparison"
-import HeroSearchBar from "@/components/rentafacil/explore/HeroSearchBar"
 
 export default function RentaFacilHome() {
   return (
@@ -14,7 +13,7 @@ export default function RentaFacilHome() {
       <HowItWorks />
       <ForOwners />
       <FinalCTA />
-      < Comparison />
+      <Comparison /> 
     </>
   )
 }

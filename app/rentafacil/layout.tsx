@@ -1,35 +1,34 @@
-"use client"
-
+// app/rentafacil/layout.tsx
 import Navbar from "@/components/rentafacil/navbar/Navbar"
 import Footer from "@/components/rentafacil/global/Footer"
-import Web3Provider from "@/src/rentafacil/web3/Web3Provider"
-import { AuthProvider } from "@/src/rentafacil/auth/AuthContext"
+import Providers from "@/components/rentafacil/global/Providers"
 
 interface Props {
   children: React.ReactNode
 }
 
+export const metadata = {
+  title: "RentaFácil",
+  description: "Alquila lo que necesitas, fácil y seguro.",
+}
+
 export default function RentaFacilLayout({ children }: Props) {
   return (
-    <AuthProvider>
-      <Web3Provider>
-        <div className="min-h-screen flex flex-col bg-white">
+    <Providers>
+      <div className="min-h-screen flex flex-col bg-white">
 
-          {/* NAVBAR */}
-          <Navbar />
+        {/* NAVBAR */}
+        <Navbar />
 
-          {/* MAIN CONTENT */}
-          <main className="flex-1 pt-16 md:pt-20">
-            <div className="w-full max-w-7xl mx-auto px-6">
-              {children}
-            </div>
-          </main>
+        {/* MAIN CONTENT */}
+        <main className="flex-1 pt-16 md:pt-20">
+          {children}
+        </main>
 
-          {/* FOOTER */}
-          <Footer />
+        {/* FOOTER */}
+        <Footer />
 
-        </div>
-      </Web3Provider>
-    </AuthProvider>
+      </div>
+    </Providers>
   )
 }
