@@ -1,6 +1,7 @@
 import { Review } from "./Review"
 import { Contract } from "./Contract"
 import { RequiredDocument } from "./RequiredDocument"
+import { PropertyWeb3 } from "./propertyWeb3"
 
 export type PropertyType =
   | "apartment"
@@ -8,8 +9,6 @@ export type PropertyType =
   | "loft"
   | "penthouse"
   | "studio"
-
-export type DocumentType = "pdf" | "image" | "any"
 
 export interface Property {
   id: string
@@ -39,6 +38,8 @@ export interface Property {
   rating?: number
   reviews?: Review[]
 
-  // 🔥 NUEVO
   documentsRequired?: RequiredDocument[]
+
+  // 🔗 WEB3 (integrado)
+  web3?: PropertyWeb3
 }
