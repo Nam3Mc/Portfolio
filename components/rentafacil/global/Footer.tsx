@@ -17,7 +17,7 @@ const NAV_SECTIONS = [
     links: [
       { label: "Mis propiedades", href: "/rentafacil/dashboard" },
       { label: "Contratos activos", href: "/rentafacil/contracts" },
-      { label: "Publicar propiedad", href: "/rentafacil/create-property" },
+      { label: "Publicar propiedad", href: "/rentafacil/add-property" },
     ],
   },
   {

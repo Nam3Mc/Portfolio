@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect, useState } from "react"
-import PropertyCard from "@/components/owner-panel/PropertyCard"
-import PropertyListHeader from "@/components/owner-panel/PropertyListHeader"
+import PropertyCard from "@/components/rentafacil/owner-panel/PropertyCard"
+import PropertyListHeader from "@/components/rentafacil/owner-panel/PropertyListHeader"
 import {
   OwnerProperty,
   getOwnerProperties,

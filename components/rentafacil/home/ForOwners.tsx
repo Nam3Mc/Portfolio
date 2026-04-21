@@ -87,7 +87,7 @@ export default function ForOwners() {
           {/* CTA */}
           <div className="mt-12">
             <Link
-              href="/rentafacil/list-property"
+              href="/rentafacil/add-property"
               className="px-6 py-3 rounded-xl bg-indigo-600 text-white font-medium hover:bg-indigo-700 shadow-md transition-all duration-300"
             >
               Publicar mi propiedad

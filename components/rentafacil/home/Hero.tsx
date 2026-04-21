@@ -34,7 +34,7 @@ export default function Hero() {
       return
     }
 
-    router.push("/rentafacil/owner/list-property")
+    router.push("/rentafacil/owner/add-property")
   }
 
   const handleSearch = () => {

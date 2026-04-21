@@ -42,7 +42,7 @@ export default function FinalCTA() {
           className="mt-10 flex flex-col sm:flex-row gap-4 justify-center"
         >
           <Link
-            href="/rentafacil/list-property"
+            href="/rentafacil/add-property"
             className="px-6 py-3 rounded-xl bg-indigo-600 text-white font-medium shadow-md hover:shadow-lg hover:bg-indigo-700 transition-all duration-300 text-center"
           >
             Publicar mi propiedad

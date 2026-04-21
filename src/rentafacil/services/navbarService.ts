@@ -29,17 +29,17 @@ const CONFIGS: Record<string, NavbarConfig> = {
   owner: {
     navLinks: [
       { label: "Explorar", href: "/rentafacil/explore" },
-      { label: "Propiedades", href: "/rentafacil/owner/properties" },
+      { label: "Propiedades", href: "/rentafacil/owner-panel" },
       { label: "Contratos", href: "/rentafacil/mis-contratos" },
     ],
     dropdownLinks: [
       { label: "Perfil", href: "/rentafacil/profile" },
-      { label: "Mis propiedades", href: "/rentafacil/owner/properties" },
+      { label: "Mis propiedades", href: "/rentafacil/owner-panel" },
       { label: "Contratos", href: "/rentafacil/mis-contratos" },
-      { label: "Finanzas", href: "/rentafacil/owner/finance" },
-      { label: "+ Nueva propiedad", href: "/rentafacil/list-property", mobileOnly: true },
+      { label: "Finanzas", href: "/rentafacil/owner-panel/finance" },
+      { label: "+ Nueva propiedad", href: "/rentafacil/add-property", mobileOnly: true },
     ],
-    cta: { label: "+ Nueva propiedad", href: "/rentafacil/list-property", variant: "filled" },
+    cta: { label: "+ Nueva propiedad", href: "/rentafacil/add-property", variant: "filled" },
   },
 }
 

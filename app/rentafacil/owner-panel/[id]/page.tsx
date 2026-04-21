@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { ArrowLeft, Pause, Play, Loader2 } from "lucide-react"
-import StatusBadge from "@/components/owner-panel/StatusBadge"
-import PropertyDetailTabs from "@/components/owner-panel/detail/PropertyDetailTabs"
+import StatusBadge from "@/components/rentafacil/owner-panel/StatusBadge"
+import PropertyDetailTabs from "@/components/rentafacil/owner-panel/detail/PropertyDetailTabs"
 import {
   OwnerProperty,
   getOwnerProperty,

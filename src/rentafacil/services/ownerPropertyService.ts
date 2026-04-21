@@ -204,7 +204,7 @@ export async function getPropertyContracts(propertyId: string): Promise<OwnerCon
 
 // ── PARA BACKEND REAL ────────────────────────────────────────────────────────
 // export async function getOwnerProperties(): Promise<OwnerProperty[]> {
-//   const res = await fetch("/api/owner/properties")
+//   const res = await fetch("/api/owner-panel")
 //   if (!res.ok) throw new Error("Error al obtener propiedades")
 //   return res.json()
 // }

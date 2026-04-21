@@ -19,7 +19,7 @@ export default function NavbarOwner() {
 
           {/* CTA PRINCIPAL */}
           <Link
-            href="/rentafacil/list-property"
+            href="/rentafacil/add-property"
             className="hidden sm:block bg-indigo-600 text-white px-4 py-2 rounded-xl text-sm hover:bg-indigo-700 transition"
           >
             + Nueva propiedad
@@ -61,7 +61,7 @@ export default function NavbarOwner() {
                     </Link>
 
                     <Link
-                      href="/rentafacil/owner/properties"
+                      href="/rentafacil/owner-panel"
                       className="px-4 py-2 hover:bg-gray-100"
                     >
                       Mis propiedades
@@ -75,7 +75,7 @@ export default function NavbarOwner() {
                     </Link>
 
                     <Link
-                      href="/rentafacil/owner/finance"
+                      href="/rentafacil/owner-panel/finance"
                       className="px-4 py-2 hover:bg-gray-100"
                     >
                       Finanzas
@@ -83,7 +83,7 @@ export default function NavbarOwner() {
 
                     {/* MOBILE CTA */}
                     <Link
-                      href="/rentafacil/list-property"
+                      href="/rentafacil/add-property"
                       className="px-4 py-2 hover:bg-gray-100 sm:hidden"
                     >
                       + Nueva propiedad
@@ -112,7 +112,7 @@ export default function NavbarOwner() {
       </Link>
 
       <Link
-        href="/rentafacil/owner/properties"
+        href="/rentafacil/owner-panel"
         className="py-2 px-2 rounded-lg hover:bg-gray-100"
       >
         Mis propiedades

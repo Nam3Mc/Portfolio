@@ -1,4 +1,3 @@
-// app/rentafacil/create-property/page.tsx
 import CreatePropertyWizard from "@/components/rentafacil/create-property/CreatePropertyWizard"
 
 export const metadata = {

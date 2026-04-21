@@ -142,7 +142,7 @@ export default function CreatePropertyWizard() {
         )}
 
         <button
-          onClick={() => router.push("/rentafacil/owner/properties")}
+          onClick={() => router.push("/rentafacil/owner-panel")}
           className="px-6 py-3 bg-indigo-600 text-white rounded-xl text-sm font-semibold hover:bg-indigo-700 transition-colors"
         >
           Ver mis propiedades

@@ -20,7 +20,7 @@ export default function PropertyListHeader({ total, active }: Props) {
       </div>
 
       <Link
-        href="/rentafacil/create-property"
+        href="/rentafacil/add-property"
         className="
           flex items-center gap-2 shrink-0
           px-4 py-2.5 rounded-xl
