@@ -1,4 +1,7 @@
+
+
 'use client'
+
 
 import { useState } from "react"
 import Link from "next/link"
@@ -9,6 +12,7 @@ import {
   validateRegister, registerUser,
 } from "@/src/rentafacil/services/authService"
 import { useAuth } from "@/src/rentafacil/auth/AuthContext"
+
 
 const ROLES: { id: UserRole; label: string; sub: string; icon: typeof Home }[] = [
   {
@@ -25,15 +29,18 @@ const ROLES: { id: UserRole; label: string; sub: string; icon: typeof Home }[] =
   },
 ]
 
+
 const STRENGTHS = [
   { label: "8 caracteres mínimo", test: (p: string) => p.length >= 8 },
   { label: "Una mayúscula",        test: (p: string) => /[A-Z]/.test(p) },
   { label: "Un número",            test: (p: string) => /[0-9]/.test(p) },
 ]
 
+
 export default function RegisterPage() {
   const router = useRouter()
   const { login } = useAuth()
+
 
   const [form, setForm] = useState<RegisterPayload>({
     name: "", email: "", password: "", role: "guest",
@@ -43,15 +50,18 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false)
   const [globalError, setGlobalError] = useState("")
 
+
   const set = (field: keyof RegisterPayload, value: string) => {
     setForm(f => ({ ...f, [field]: value }))
     setErrors(e => { const n = { ...e }; delete n[field]; return n })
     setGlobalError("")
   }
 
+
   const handleSubmit = async () => {
     const errs = validateRegister(form)
     if (Object.keys(errs).length > 0) { setErrors(errs); return }
+
 
     setLoading(true)
     setGlobalError("")
@@ -67,11 +77,14 @@ export default function RegisterPage() {
     }
   }
 
+
   const passStrength = STRENGTHS.filter(s => s.test(form.password)).length
+
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-4 py-12">
       <div className="w-full max-w-md flex flex-col gap-6">
+
 
         {/* LOGO */}
         <div className="flex flex-col items-center gap-2">
@@ -86,8 +99,10 @@ export default function RegisterPage() {
           </p>
         </div>
 
+
         {/* CARD */}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sm:p-8 flex flex-col gap-5">
+
 
           {/* ROLE SELECTOR */}
           <div className="flex flex-col gap-2">
@@ -122,8 +137,10 @@ export default function RegisterPage() {
             {errors.role && <p className="text-xs text-red-500">{errors.role}</p>}
           </div>
 
+
           {/* DIVIDER */}
           <div className="h-px bg-gray-100" />
+
 
           {/* NAME */}
           <div className="flex flex-col gap-1.5">
@@ -144,6 +161,7 @@ export default function RegisterPage() {
             {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
           </div>
 
+
           {/* EMAIL */}
           <div className="flex flex-col gap-1.5">
             <label className="text-sm font-medium text-gray-700">Email</label>
@@ -162,6 +180,7 @@ export default function RegisterPage() {
             />
             {errors.email && <p className="text-xs text-red-500">{errors.email}</p>}
           </div>
+
 
           {/* PASSWORD */}
           <div className="flex flex-col gap-1.5">
@@ -188,6 +207,7 @@ export default function RegisterPage() {
                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
+
 
             {/* PASSWORD STRENGTH */}
             {form.password.length > 0 && (
@@ -224,12 +244,14 @@ export default function RegisterPage() {
             {errors.password && <p className="text-xs text-red-500">{errors.password}</p>}
           </div>
 
+
           {/* GLOBAL ERROR */}
           {globalError && (
             <div className="px-3 py-2.5 rounded-xl bg-red-50 border border-red-200">
               <p className="text-xs text-red-600">{globalError}</p>
             </div>
           )}
+
 
           {/* SUBMIT */}
           <button
@@ -251,6 +273,7 @@ export default function RegisterPage() {
             }
           </button>
 
+
           {/* TERMS NOTE */}
           <p className="text-[11px] text-gray-400 text-center leading-relaxed">
             Al registrarte aceptás los{" "}
@@ -264,7 +287,9 @@ export default function RegisterPage() {
             de RentaFácil.
           </p>
 
+
         </div>
+
 
         {/* LOGIN LINK */}
         <p className="text-sm text-gray-500 text-center">
@@ -273,6 +298,7 @@ export default function RegisterPage() {
             Iniciá sesión
           </Link>
         </p>
+
 
       </div>
     </div>
