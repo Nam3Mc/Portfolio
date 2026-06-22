@@ -2,7 +2,7 @@ export default function Home() {
 
   return (
     <div>
-      PORTFOLIO PAGE
+      PEST CONTROL PAGE
     </div>
   )
 }

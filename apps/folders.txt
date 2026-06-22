@@ -1,0 +1,19 @@
+apps/web              → main portfolio website
+apps/pest-control     → independent Pest Control app
+apps/rentafacil       → independent RentaFácil app
+apps/ecommerce        → independent E-commerce app
+
+packages/ui           → shared buttons, cards, navbar, layout
+packages/typescript-config → shared TypeScript config
+packages/eslint-config     → shared lint config
+
+
+dreiser-portfolio/
+│
+├── apps/
+│   └── web/              # Your portfolio
+│
+├── packages/
+│   ├── ui/               # Shared components
+│   ├── eslint-config/
+│   └── typescript-config/
